@@ -12,21 +12,7 @@ void addList(approveList *aphead, char *title, char *tips, bool content);
 void editList(approveList *target, char *title, char *tips, bool content);
 void saveList(approveList *aphead);
 bool deleteList(approveList *aphead, int listNumber);
-/*
-approveList* createList(char *title, char *tips, bool content)//创建审批流程
-{
-    approveList *aphead = new approveList();
-    if(aphead->listNum >= 1)
-        addList(aphead, title, tips, content);
-    else
-    {
-        ofstream saveList("./src/appList.dat", ios::binary | ios::out);
-        saveList.write((char *)title, sizeof(title));
-        saveList.write((char *)tips, sizeof(tips));
-        saveList.write((char *)&content, sizeof(content));
-    }
-    saveList(aphead);
-}*/
+
 void addList(approveList *aphead, char *title, char *tips, bool content)
 {
     approveList *head = aphead;
