@@ -12,17 +12,19 @@
 **实现：用户信息管理，考勤，审批，数据导出，自定义审批流程**
 
 程序结构：
+```
 |-根目录
 | uidInf.ini
 | main.exe
 |-src
 	| userData.dat
 	| attendanceData.dat
+```
 
 ### 开发进度
 
 **已完成：**
-- 确立程序流程：pdf文件 [upl-file uuid=661bf844-ca7d-4762-a3ff-292c8a0f919c size=329kB]oa.pdf[/upl-file]
+- 确立程序流程：见下方导图
 - 确定开发思路
 - 数据结构框架建立
 - 注册，登录（自动化UID）
@@ -54,3 +56,6 @@
 ### 导图
 
 ![mind](https://github.com/CSTHenry/ONEByteOA/blob/main/src/oamind.png)
+
+### License
+[MIT License](https://github.com/CSTHenry/ONEByteOA/blob/main/LICENSE)
