@@ -22,6 +22,7 @@
 |-src
 	| userData.dat
 	| attendanceData.dat
+	| appList.dat
 ```
 
 ### 开发进度
@@ -65,6 +66,6 @@
 
 ![mind](https://github.com/CSTHenry/ONEByteOA/blob/main/src/oamind.png)
 
-### License
+### LICENSE
 
 [MIT License](https://github.com/CSTHenry/ONEByteOA/blob/main/LICENSE)
