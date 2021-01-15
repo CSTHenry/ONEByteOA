@@ -1,12 +1,14 @@
 ### ONEByteOA程序信息
 
+![1](https://img.shields.io/github/license/CSTHenry/ONEByteOA) ![2](https://img.shields.io/github/v/release/CSTHenry/ONEByteOA?include_prereleases) ![3](https://img.shields.io/github/issues-pr/CSTHenry/ONEByteOA)
+
 > OA系统即Office Automation，简称OA，在高校、企业中应用广泛，通过开发OA系统，能够更深入地理解相关内容，更能考察数据结构能力及代码开发规范。
 
-平台：Windows，Linux
-类型：控制台程序
-语言：C++（遵循C++17标准）
-数据成员和成员函数封装：```.h```
-函数封装：```.cpp```
+- 平台：Windows，Linux
+- 类型：控制台程序
+- 语言：C++（遵循C++17标准）
+- 数据成员和成员函数封装：```.h```
+- 函数封装：```.cpp```
 
 **特性：动态内存管理，二进制存储，函数分类管理（多文件结构）**
 **实现：用户信息管理，考勤，审批，数据导出，自定义审批流程**
