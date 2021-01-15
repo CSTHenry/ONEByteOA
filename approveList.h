@@ -11,7 +11,7 @@ class approveList
 {
     public:
         approveList* loadList(approveList* aphead);
-        approveList *netx = nullptr;
+        approveList *next = nullptr;
         int listNum = 0;//审批流程编号
         bool isContent = false;//是否开启申请内容填写？
         char *reListTips()
@@ -32,8 +32,8 @@ class approveList
         }
 
     private:
-        char listTips[50] = "\0";//申请提示
-        char listTitle[50] = "\0";//流程名
+        char listTips[100] = "\0";//申请提示
+        char listTitle[21] = "\0";//流程名
 };
 
 #endif

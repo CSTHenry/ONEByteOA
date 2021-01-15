@@ -1,4 +1,5 @@
 #include "userAccount.h"
+#include "appoveFunc.cpp"
 #include "attendanceFunc.cpp"
 #include <fstream>
 #include <iostream>
@@ -9,9 +10,11 @@ void randUID(int gourp,char* newUid);
 void userDataChange(userAccount *head, userAccount *point);
 bool userMenuChoice1(userAccount *head, userAccount* point);
 bool userMenuChoice2(attendance *ahead, attendance *apoint);
+bool userMenuChoice3();//待开发
 bool cheakUidInAdvance(userAccount *head, char *id); //无重复UID返回TRUE
 void deleteUser(userAccount* head, attendance* ahead, char* uid);
 bool adminMenuChoice2(userAccount *head, attendance *ahead);
+bool adminMenuChoice3();
 bool adminMenuChoice5(userAccount *head, attendance *ahead, attendance *apoint);
 void adminUserDataChange(userAccount *head, userAccount *target);
 bool adminMenuChoice(userAccount *head, attendance* ahead, userAccount *point); //返回true表示对链表进行了修改，false代表直接返回
@@ -76,7 +79,10 @@ bool adminMenuChoice(userAccount *head, attendance* ahead, userAccount *point)
                 return false;
             break;
         case 3:
-            return false;
+            if(adminMenuChoice3())
+                return true;
+            else
+                return false;
             break;
         case 4:
             return false;
@@ -244,6 +250,93 @@ bool adminMenuChoice2(userAccount *head, attendance *ahead)
         system("CLS");
         return false;
     }
+}
+bool adminMenuChoice3()//这个函数属实写得垃圾。。。但无所谓
+{
+    int num = 0;
+    approveList *target = nullptr;
+    approveList *aphead = new approveList();
+    char title[21] = "\0", tips[100] = "\0";
+    char ch = '\0';
+    system("CLS");
+    if(!aphead->loadList(aphead))
+    {
+        cout << "暂无审批流程，输入y 创建审批流程，输入n 返回管理员菜单：" << endl;
+        cin >> ch;
+        if(!(ch == 'y'||ch == 'Y'))
+        {
+            system("CLS");
+            return false;
+        }
+        else{
+        create:
+            cout << "请输入审批项目名称（10字以内）：" << endl;
+            cin >> title;
+            cout << "请输入审批提示/指引（50字以内）：" << endl;
+            cin >> tips;
+            cout << "是否开启审批内容选填框（y开启n关闭）？" << endl;
+            cin >> ch;
+            if(!(ch == 'y'||ch == 'Y'))
+                addList(aphead, title, tips, false);
+            else
+                addList(aphead, title, tips, true);
+            cout << "创建流程完成。" << endl;
+            system("pause");
+            system("CLS");
+        }
+    }
+    else
+    {
+        cout << "已创建的审批流程：" << endl;
+        cout << "[编号]"
+             << "\t"
+             << "[审批项目]"
+             << "\t"
+             << "[是否填写申请内容]" << endl;
+        approveList *temp = aphead;
+        while(aphead)
+        {
+            cout << aphead->listNum << "\t" << aphead->reListTitle() << "\t";
+            if(aphead->isContent)
+                cout << "是" << endl;
+            else
+                cout << "否" << endl;
+            aphead = aphead->next;
+        }
+        aphead = temp;
+        cout << endl;
+        cout << "输入a 编辑审批流程，输入b 添加审批流程，输入c 删除审批流程，输入d 返回管理员菜单：" << endl;
+        cin >> ch;
+        switch(ch)
+        {
+            case 'a':
+                editList(aphead);
+                system("pause");
+                system("CLS");
+                break;
+            case 'b':
+                goto create;
+                break;
+            case 'c':
+                cout << "请输入需要删除的流程编号：" << endl;
+                cin >> num;
+                while(!(target = appSearch(aphead, num)))
+                {
+                    cout << "未检索到对于的流程，请重新输入：" << endl;
+                    cin >> num;
+                }
+                deleteList(aphead, num);
+                cout << "删除流程成功。" << endl;
+                saveList(aphead);
+                system("pause");
+                system("CLS");
+                break;
+            default:
+                system("CLS");
+                return false;
+        }
+    }
+    return true;
 }
 bool adminMenuChoice5(userAccount *head, attendance *ahead, attendance *apoint)
 {
