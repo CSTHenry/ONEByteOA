@@ -3,8 +3,8 @@
 //2021-01
 //VSCode(GCC)
 /***********************************************/
-#include "src\userAccount.h"
-#include "src\mainFunc.cpp"
+#include "userAccount.h"
+#include "mainFunc.cpp"
 #include <iostream>
 
 using namespace std;
