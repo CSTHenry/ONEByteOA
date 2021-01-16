@@ -12,7 +12,7 @@ void userMenuChoice();
 void adminMenuChoice();
 void printMenu()
 {
-    cout << "       办公自动化 beta0.1       " << endl;
+    cout << "        办公自动化 V1.0       " << endl;
     cout << "===============================" << endl;
     cout << "=         01.账户注册         =" << endl;
     cout << "=         02.账户登录         =" << endl;
