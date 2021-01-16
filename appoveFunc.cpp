@@ -14,7 +14,6 @@ void editList(approveList *target, char *title, char *tips, bool content);
 void saveApprove(approve *uahead);
 void saveList(approveList *aphead);
 bool deleteList(approveList *aphead, int listNumber);
-int deleteFinished(approve *uahead);
 bool getList(approve *uahead);
 void adminApprove(approve *target);
 void getUserApprove(userAccount *point, approve *uahead);
@@ -358,36 +357,4 @@ re:
     cout << endl;
     system("pause");
     system("CLS");
-}
-int deleteFinished(approve *uahead)
-{
-    approve *head = uahead;
-    approve *temp = uahead;
-    int flag = 0;
-    bool num = false;
-re:
-    while(uahead)
-    {
-        if(uahead->statu)
-        {
-            flag += 1;
-            break;
-        }
-        num = true;
-        temp = uahead;
-        uahead = uahead->next;
-    }
-    if(num)
-        temp->next = uahead->next;
-    else
-    {
-        uahead = uahead->next;
-        head = uahead;
-    }
-    if (uahead)
-    {
-        uahead = head;
-        goto re;
-    }
-    return flag;
 }

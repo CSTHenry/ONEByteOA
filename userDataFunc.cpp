@@ -468,16 +468,8 @@ bool adminMenuChoice4()
     else
     {
         cout << endl;
-        cout << "输入y 进行审核，输入z 清除已经结束的审批流程（谨慎操作），输入n 返回管理员菜单：" << endl;
+        cout << "输入y 进行审核，输入n 返回管理员菜单：" << endl;
         cin >> ch;
-        if(ch != 'y' && ch != 'Y')
-        {
-            cout << "清除完成，共清理 " << deleteFinished(uahead) << "个 已结束的审批流程。" << endl;
-            saveApprove(uahead);
-            system("pause");
-            system("CLS");
-            return false;
-        }
         if(ch == 'N'||ch == 'n')
         {
             system("CLS");
