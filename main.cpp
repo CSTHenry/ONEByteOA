@@ -37,17 +37,5 @@ menu:
         system("CLS");
         break;
     }
-    /*userAccount *head = new userAccount();
-    head->loadUserData(head);
-    cout << "数据表测试工具" << endl;
-    cout << endl;
-    if(!(bool)head)
-        return 0;
-    while(head)
-    {
-        head->print_userInf();
-        head = head->next;
-    }
-    system("pause");*/
     return 0;
 }

@@ -9,18 +9,19 @@ using namespace std;
 //approveList* createList(char *title, char *tips, bool content);
 approveList *appSearch(approveList *aphead, int num);
 void addList(approveList *aphead, char *title, char *tips, bool content);
-void addApprove(approve *uahead, approveList* aphead, char *uid, char *apply, char* content);
+void addApprove(approve *uahead, approveList *aphead, char *uid, char *apply, char *content);
 void editList(approveList *target, char *title, char *tips, bool content);
+void editApprove(approve *uahead, char *uid);
 void saveApprove(approve *uahead);
 void saveList(approveList *aphead);
 bool deleteList(approveList *aphead, int listNumber);
 bool getList(approve *uahead);
 void adminApprove(approve *target);
-void getUserApprove(userAccount *point, approve *uahead);
+bool getUserApprove(userAccount *point, approve *uahead);
 void addList(approveList *aphead, char *title, char *tips, bool content)
 {
     approveList *head = aphead;
-    if(aphead->listNum == 0)
+    if (aphead->listNum == 0)
     {
         aphead->listNum += 1;
         aphead->setTitle(title);
@@ -43,7 +44,7 @@ void addList(approveList *aphead, char *title, char *tips, bool content)
 void editList(approveList *aphead)
 {
     int num = 0;
-    char title[21] = "\0", tips[100] = "\0", ch='\0';
+    char title[21] = "\0", tips[100] = "\0", ch = '\0';
     approveList *target = nullptr;
     cout << "请输入需要编辑的流程编号：" << endl;
     cin >> num;
@@ -52,7 +53,7 @@ void editList(approveList *aphead)
         cout << "未检索到对于的流程，请重新输入：" << endl;
         cin >> num;
     }
-    cout << "正在编辑 [" << target->listNum << " " << target->reListTitle()<<"] 流程" << endl;
+    cout << "正在编辑 [" << target->listNum << " " << target->reListTitle() << "] 流程" << endl;
     cout << "请输入审批项目名称（10字以内）：" << endl;
     cin >> title;
     target->setTitle(title);
@@ -61,7 +62,7 @@ void editList(approveList *aphead)
     target->setTips(tips);
     cout << "是否开启审批内容选填框（y开启n关闭）？" << endl;
     cin >> ch;
-    if (ch == 'y'||ch == 'Y')
+    if (ch == 'y' || ch == 'Y')
         target->isContent = true;
     else
         target->isContent = false;
@@ -146,10 +147,10 @@ approveList *appSearch(approveList *aphead, int num)
     }
     return aphead;
 }
-void addApprove(approve *uahead, approveList* aphead, char *uid, char *uName, char *apply, char* content)
+void addApprove(approve *uahead, approveList *aphead, char *uid, char *uName, char *apply, char *content)
 {
     approve *head = uahead;
-    if(uahead->listNum == 0)
+    if (uahead->listNum == 0)
     {
         uahead->listNum = aphead->listNum;
         strcpy(uahead->Uid, uid);
@@ -238,20 +239,22 @@ bool getList(approve *uahead)
     system("CLS");
     cout << "等待的审批队列：" << endl;
     cout << endl;
-    while(uahead)
+    while (uahead)
     {
-        if(!uahead->listNum)
+        if (!uahead->listNum)
             break;
-        if(uahead->statu)
+        if (uahead->statu)
         {
             uahead = uahead->next;
             continue;
         }
-        cout << "[" << uahead->Uid << "] " << uahead->name << "->" << "[" << uahead->listNum << "]" << uahead->reTitle() << "\t" << "未审核" << endl;
+        cout << "[" << uahead->Uid << "] " << uahead->name << "->"
+             << "[" << uahead->listNum << "]" << uahead->reTitle() << "\t"
+             << "未审核" << endl;
         flag = true;
         uahead = uahead->next;
     }
-    if(!flag)
+    if (!flag)
     {
         cout << "暂无需要处理的申请。" << endl;
         return false;
@@ -265,7 +268,7 @@ void adminApprove(approve *target)
     system("CLS");
     cout << "正在审核 [" << target->name << " " << target->reTitle() << "]" << endl;
     cout << endl;
-    if(strlen(target->reContent()))
+    if (strlen(target->reContent()))
     {
         cout << "申请内容：" << endl;
         cout << target->reContent() << endl;
@@ -275,14 +278,14 @@ void adminApprove(approve *target)
     cout << endl;
     cout << "输入y 通过审核，输入n 拒绝通过：" << endl;
     cin >> ch;
-    if(ch == 'Y' || ch =='y')
+    if (ch == 'Y' || ch == 'y')
         target->flag = true;
     cout << "请输入审核意见（50字以内）：" << endl;
     cin >> re;
     target->setReply(re);
     target->statu = true;
 }
-void getUserApprove(userAccount *point, approve *uahead)
+bool getUserApprove(userAccount *point, approve *uahead)
 {
     system("CLS");
     int num = 0;
@@ -291,45 +294,50 @@ void getUserApprove(userAccount *point, approve *uahead)
     cout << "当前审批进度：" << endl;
     cout << endl;
     approve *temp = uahead;
-    while(uahead)
+    while (uahead)
     {
-        if(!strcmp(point->uid,uahead->Uid))
+        if (!strcmp(point->uid, uahead->Uid))
         {
             flag = true;
             cout << "[申请项]-> "
-                 << "[" << uahead->listNum << "]" << uahead->reTitle() << "\t" << " [审核状态]-> " ;
+                 << "[" << uahead->listNum << "]" << uahead->reTitle() << "\t"
+                 << " [审核状态]-> ";
             uahead->cheakStatu();
         }
         uahead = uahead->next;
     }
-    if(!flag)
+    if (!flag)
     {
         cout << endl;
         cout << "暂无创建的申请，返回用户菜单" << endl;
         system("pause");
         system("CLS");
-        return;
+        return false;
     }
     uahead = temp;
     cout << endl;
-    cout << "输入y 查看审核详情，输入n 返回用户菜单：" << endl;
+    cout << "输入y 查看审核详情，输入z 编辑并重新提交未审核或驳回的申请，输入n 返回用户菜单：" << endl;
     cin >> ch;
-    if(!(ch == 'y' || ch == 'Y'))
+    if (!(ch == 'y' || ch == 'Y' || ch == 'z' || ch == 'Z'))
     {
         system("CLS");
-        return;
+        return false;
+    }
+    if (ch == 'z' || ch == 'Z')
+    {
+        return true;
     }
     cout << "输入对于申请编号查看审核详情：" << endl;
 re:
     cin >> num;
     uahead = temp;
-    while(uahead)
+    while (uahead)
     {
-        if(!strcmp(point->uid,uahead->Uid) && num == uahead->listNum)
+        if (!strcmp(point->uid, uahead->Uid) && num == uahead->listNum)
             break;
         uahead = uahead->next;
     }
-    if(!uahead)
+    if (!uahead)
     {
         cout << "此编号对应的申请项不存在，请重新输入：" << endl;
         goto re;
@@ -339,7 +347,7 @@ re:
     cout << endl;
     cout << "[审核结果]->";
     uahead->cheakStatu();
-    if(strlen(uahead->reContent()))
+    if (strlen(uahead->reContent()))
     {
         cout << endl;
         cout << "[申请内容]" << endl;
@@ -350,11 +358,54 @@ re:
     cout << uahead->reApply() << endl;
     cout << endl;
     cout << "[审核意见]" << endl;
-    if(uahead->statu)
+    if (uahead->statu)
         cout << uahead->reReply() << endl;
     else
         cout << "暂无审核意见。" << endl;
     cout << endl;
+    return true;
     system("pause");
     system("CLS");
+}
+void editApprove(approve *uahead, char *uid)
+{
+    int num;
+    approve *head = uahead;
+    char content[200] = "\0", apply[200] = "\0";
+    cout << "请输入待审核或被驳回的申请编号以进行编辑：" << endl;
+re:
+    uahead = head;
+    cin >> num;
+    while (uahead)
+    {
+        if (!strcmp(uahead->Uid, uid) && uahead->listNum == num && (!uahead->statu || !uahead->flag))
+        {
+            system("CLS");
+            cout << "正在编辑申请 [" << uahead->reTitle() << "] :" << endl;
+            if (strlen(uahead->reContent()))
+            {
+                cout << "请输入申请内容（100字以内）：" << endl;
+                cin >> content;
+            }
+            cout << "请输入申请理由（100字以内）：" << endl;
+            cin >> apply;
+            cout << "编辑成功，审批进度请返回用户菜单查看。" << endl;
+            uahead->setContent(content);
+            uahead->setApply(apply);
+            uahead->statu = false;
+            saveApprove(head);
+            system("pause");
+            system("CLS");
+            return;
+        }
+        else
+        {
+            uahead = uahead->next;
+        }
+    }
+    if (!uahead)
+    {
+        cout << "输入的申请编号不存在或不满足编辑要求，请重新输入：" << endl;
+        goto re;
+    }
 }

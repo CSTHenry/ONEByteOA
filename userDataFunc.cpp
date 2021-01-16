@@ -258,11 +258,12 @@ bool userMenuChoice3(userAccount *point)
             {
                 if(cheak->listNum == num && !strcmp(cheak->Uid, point->uid))
                 {
-                    cout << "请勿重复申请同一个项目，请联系管理员及时审批或清除已结束的审批流程。" << endl;
+                    cout << "请勿重复申请同一个项目，请联系管理员及时审批。" << endl;
                     system("pause");
                     system("CLS");
                     return false;
                 }
+                cheak = cheak->next;
             }
             system("CLS");
             cout << "正在申请 [" << aphead->reListTitle() << "] :" << endl;
@@ -290,7 +291,8 @@ bool userMenuChoice4(userAccount *point)
 {
     approve *uahead = new approve();
     uahead->loadList(uahead);
-    getUserApprove(point, uahead);
+    if(getUserApprove(point, uahead))
+        editApprove(uahead, point->uid);
     return true;
 }
 bool adminMenuChoice2(userAccount *head, attendance *ahead)
@@ -434,6 +436,11 @@ bool adminMenuChoice3() //这个函数属实写得垃圾。。。但无所谓
         case 'c':
             cout << "请输入需要删除的流程编号：" << endl;
             cin >> num;
+            while(num == 1)
+            {
+                cout << "程序不允许删除第一个审批流程，请重新输入：" << endl;
+                cin >> num;
+            }
             while (!(target = appSearch(aphead, num)))
             {
                 cout << "未检索到对于的流程，请重新输入：" << endl;
@@ -477,6 +484,7 @@ bool adminMenuChoice4()
         }
         cout << "输入用户UID及其对应申请编号进行审核" << endl;
     re:
+        uahead = head;
         cout << "请输入用户UID：" << endl;
         cin >> targetUid;
         cout << "请输入申请编号：" << endl;
