@@ -64,7 +64,7 @@
 
 ### 导图
 
-![mind](https://github.com/CSTHenry/ONEByteOA/blob/main/src/oamind.png)
+![mind](https://github.com/CSTHenry/ONEByteOA/blob/main/src/mind.svg)
 
 ### LICENSE
 
