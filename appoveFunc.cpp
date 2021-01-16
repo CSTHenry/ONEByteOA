@@ -9,10 +9,15 @@ using namespace std;
 //approveList* createList(char *title, char *tips, bool content);
 approveList *appSearch(approveList *aphead, int num);
 void addList(approveList *aphead, char *title, char *tips, bool content);
+void addApprove(approve *uahead, approveList* aphead, char *uid, char *apply, char* content);
 void editList(approveList *target, char *title, char *tips, bool content);
+void saveApprove(approve *uahead);
 void saveList(approveList *aphead);
 bool deleteList(approveList *aphead, int listNumber);
-
+int deleteFinished(approve *uahead);
+bool getList(approve *uahead);
+void adminApprove(approve *target);
+void getUserApprove(userAccount *point, approve *uahead);
 void addList(approveList *aphead, char *title, char *tips, bool content)
 {
     approveList *head = aphead;
@@ -141,4 +146,248 @@ approveList *appSearch(approveList *aphead, int num)
         aphead = aphead->next;
     }
     return aphead;
+}
+void addApprove(approve *uahead, approveList* aphead, char *uid, char *uName, char *apply, char* content)
+{
+    approve *head = uahead;
+    if(uahead->listNum == 0)
+    {
+        uahead->listNum = aphead->listNum;
+        strcpy(uahead->Uid, uid);
+        strcpy(uahead->name, uName);
+        uahead->setTitle(aphead->reListTitle());
+        uahead->setContent(content);
+        uahead->setApply(apply);
+    }
+    else
+    {
+        while (uahead->next)
+            uahead = uahead->next; //转换为链表尾地址
+        approve *nextPtr = new approve();
+        nextPtr->listNum = aphead->listNum;
+        strcpy(nextPtr->Uid, uid);
+        strcpy(nextPtr->name, uName);
+        nextPtr->setTitle(aphead->reListTitle());
+        nextPtr->setContent(content);
+        nextPtr->setApply(apply);
+        uahead->next = nextPtr;
+    }
+    saveApprove(head);
+}
+void saveApprove(approve *uahead) //./src/userApprove.dat
+{
+    ofstream saveList("./src/userApprove.dat", ios::binary | ios::out); //F:\\VSCode_Projects\\VSCode-C++\\oa\\src\\userApprove.dat
+    while (uahead)
+    {
+        saveList.write((char *)uahead->Uid, sizeof(uahead->Uid));
+        saveList.write((char *)uahead->name, sizeof(uahead->name));
+        saveList.write((char *)&uahead->listNum, sizeof(uahead->listNum));
+        saveList.write((char *)&uahead->statu, sizeof(uahead->statu));
+        saveList.write((char *)&uahead->flag, sizeof(uahead->flag));
+        saveList.write((char *)uahead->reContent(), 200);
+        saveList.write((char *)uahead->reTitle(), 21);
+        saveList.write((char *)uahead->reApply(), 200);
+        saveList.write((char *)uahead->reReply(), 101);
+        uahead = uahead->next;
+    }
+    saveList.close();
+}
+approve *approve::loadList(approve *uahead)
+{
+    approve *next = nullptr, *temp = nullptr;
+    ifstream loadList("./src/userApprove.dat", ios::binary | ios::in);
+    if (!loadList.fail())
+    {
+        while (!loadList.eof())
+        {
+            loadList.read((char *)uahead->Uid, sizeof(uahead->Uid));
+            loadList.read((char *)uahead->name, sizeof(uahead->name));
+            loadList.read((char *)&uahead->listNum, sizeof(uahead->listNum));
+            loadList.read((char *)&uahead->statu, sizeof(uahead->statu));
+            loadList.read((char *)&uahead->flag, sizeof(uahead->flag));
+            loadList.read((char *)uahead->content, sizeof(uahead->content));
+            loadList.read((char *)uahead->title, sizeof(uahead->title));
+            loadList.read((char *)uahead->apply, sizeof(uahead->apply));
+            loadList.read((char *)uahead->reply, sizeof(uahead->reply));
+            if (!uahead->listNum)
+            {
+                delete[] uahead;
+                uahead = temp;
+                uahead->next = nullptr;
+                break;
+            }
+            else
+            {
+                next = new approve();
+                uahead->next = next;
+                temp = uahead;
+                uahead = next;
+            }
+        }
+        loadList.close();
+        return uahead; //尾指针
+    }
+    else
+    {
+        loadList.close();
+        return nullptr; //打开文件失败返回nullptr
+    }
+}
+bool getList(approve *uahead)
+{
+    bool flag = false;
+    system("CLS");
+    cout << "等待的审批队列：" << endl;
+    cout << endl;
+    while(uahead)
+    {
+        if(!uahead->listNum)
+            break;
+        if(uahead->statu)
+        {
+            uahead = uahead->next;
+            continue;
+        }
+        cout << "[" << uahead->Uid << "] " << uahead->name << "->" << "[" << uahead->listNum << "]" << uahead->reTitle() << "\t" << "未审核" << endl;
+        flag = true;
+        uahead = uahead->next;
+    }
+    if(!flag)
+    {
+        cout << "暂无需要处理的申请。" << endl;
+        return false;
+    }
+    return true;
+}
+void adminApprove(approve *target)
+{
+    char ch = 'n', re[101] = "\0";
+    cout << endl;
+    system("CLS");
+    cout << "正在审核 [" << target->name << " " << target->reTitle() << "]" << endl;
+    cout << endl;
+    if(strlen(target->reContent()))
+    {
+        cout << "申请内容：" << endl;
+        cout << target->reContent() << endl;
+    }
+    cout << endl;
+    cout << "申请理由：" << target->reApply() << endl;
+    cout << endl;
+    cout << "输入y 通过审核，输入n 拒绝通过：" << endl;
+    cin >> ch;
+    if(ch == 'Y' || ch =='y')
+        target->flag = true;
+    cout << "请输入审核意见（50字以内）：" << endl;
+    cin >> re;
+    target->setReply(re);
+    target->statu = true;
+}
+void getUserApprove(userAccount *point, approve *uahead)
+{
+    system("CLS");
+    int num = 0;
+    bool flag = false;
+    char ch = 'n';
+    cout << "当前审批进度：" << endl;
+    cout << endl;
+    approve *temp = uahead;
+    while(uahead)
+    {
+        if(!strcmp(point->uid,uahead->Uid))
+        {
+            flag = true;
+            cout << "[申请项]-> "
+                 << "[" << uahead->listNum << "]" << uahead->reTitle() << "\t" << " [审核状态]-> " ;
+            uahead->cheakStatu();
+        }
+        uahead = uahead->next;
+    }
+    if(!flag)
+    {
+        cout << endl;
+        cout << "暂无创建的申请，返回用户菜单" << endl;
+        system("pause");
+        system("CLS");
+        return;
+    }
+    uahead = temp;
+    cout << endl;
+    cout << "输入y 查看审核详情，输入n 返回用户菜单：" << endl;
+    cin >> ch;
+    if(!(ch == 'y' || ch == 'Y'))
+    {
+        system("CLS");
+        return;
+    }
+    cout << "输入对于申请编号查看审核详情：" << endl;
+re:
+    cin >> num;
+    uahead = temp;
+    while(uahead)
+    {
+        if(!strcmp(point->uid,uahead->Uid) && num == uahead->listNum)
+            break;
+        uahead = uahead->next;
+    }
+    if(!uahead)
+    {
+        cout << "此编号对应的申请项不存在，请重新输入：" << endl;
+        goto re;
+    }
+    system("CLS");
+    cout << "正在查看 [" << uahead->listNum << "]" << uahead->reTitle() << " 审核详情：" << endl;
+    cout << endl;
+    cout << "[审核结果]->";
+    uahead->cheakStatu();
+    if(strlen(uahead->reContent()))
+    {
+        cout << endl;
+        cout << "[申请内容]" << endl;
+        cout << uahead->reContent() << endl;
+    }
+    cout << endl;
+    cout << "[申请理由]" << endl;
+    cout << uahead->reApply() << endl;
+    cout << endl;
+    cout << "[审核意见]" << endl;
+    if(uahead->statu)
+        cout << uahead->reReply() << endl;
+    else
+        cout << "暂无审核意见。" << endl;
+    cout << endl;
+    system("pause");
+    system("CLS");
+}
+int deleteFinished(approve *uahead)
+{
+    approve *head = uahead;
+    approve *temp = uahead;
+    int flag = 0;
+    bool num = false;
+re:
+    while(uahead)
+    {
+        if(uahead->statu)
+        {
+            flag += 1;
+            break;
+        }
+        num = true;
+        temp = uahead;
+        uahead = uahead->next;
+    }
+    if(num)
+        temp->next = uahead->next;
+    else
+    {
+        uahead = uahead->next;
+        head = uahead;
+    }
+    if (uahead)
+    {
+        uahead = head;
+        goto re;
+    }
+    return flag;
 }
