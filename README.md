@@ -69,7 +69,7 @@
 
 ### 导图
 
-![mind](https://github.com/CSTHenry/ONEByteOA/blob/main/src/mind.svg)
+![mind](https://github.com/CSTHenry/ONEByteOA/blob/master/src/mind.svg)
 
 ### LICENSE
 
