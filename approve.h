@@ -66,7 +66,7 @@ public:
             cout << "ÉóºËÖĞ" << endl;
     }
 
-    void printStatu() {
+    [[maybe_unused]] void printStatu() {
         cout << "ÏîÄ¿£º" << title << " ÉóºË×´Ì¬£º";
         cheakStatu();
         cout << endl;

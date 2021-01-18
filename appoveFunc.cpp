@@ -353,7 +353,7 @@ re:
     cout << endl;
     system("pause");
     system("CLS");
-    return true;
+    return false;
 }
 void editApprove(approve *uahead, char *uid)
 {

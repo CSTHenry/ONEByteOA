@@ -4,10 +4,11 @@
 #include <ctime>
 
 using namespace std;
+
 //developer:GitHub_CSTHenry(zhengke@bytecho.net)
 char *simpleTime();
-char* nowTime()
-{
+
+char *nowTime() {
     static char nowTime[50];
     time_t now = time(nullptr);
     strftime(nowTime, 50, "%YÄê%mÔÂ%dÈÕ %H:%M:%S", localtime(&now));
@@ -56,7 +57,7 @@ void attendance::savaAttendance(attendance *ahead)//½«¿¼ÇÚÁ´±í±£´æÖÁ¶þ½øÖÆ,ÔÚ¶Ô¿
             openUserFile.write((char *) &ahead->method, sizeof(bool));
             openUserFile.write((char *) ahead->attendanceTime, sizeof(ahead->attendanceTime));
             openUserFile.write((char *) ahead->backTime, sizeof(ahead->backTime));
-            openUserFile.write((char *)&ahead->simpleTime, sizeof(ahead->simpleTime));
+            openUserFile.write((char *) &ahead->simpleTime, sizeof(ahead->simpleTime));
             ahead = ahead->next;
         } while (ahead);
     } else {
@@ -67,7 +68,7 @@ void attendance::savaAttendance(attendance *ahead)//½«¿¼ÇÚÁ´±í±£´æÖÁ¶þ½øÖÆ,ÔÚ¶Ô¿
     openUserFile.close();
 }
 
-attendance *searchUserPtr(attendance *ahead, char *id)//²éÕÒ¿¼ÇÚÊý¾ÝÖÐµÄÏàÓ¦UID£¬²¢·µ»Ø¶ÔÓ¦Ö¸Õë£¬ÎÞ´ËUID·µ»ØNullptr
+[[maybe_unused]] attendance *searchUserPtr(attendance *ahead, char *id)//²éÕÒ¿¼ÇÚÊý¾ÝÖÐµÄÏàÓ¦UID£¬²¢·µ»Ø¶ÔÓ¦Ö¸Õë£¬ÎÞ´ËUID·µ»ØNullptr
 {
     while (ahead) {
         if (ahead->cheakUid(id))
@@ -86,10 +87,10 @@ attendance *attendance::loadData(attendance *ahead)//ÔØÈë¿¼ÇÚÊý¾Ý£¬´¦ÀíÍ·Ö¸Õë£¬·
     if (!loadUserFile.fail()) {
         do {
             loadUserFile.read((char *) temp->Uid, sizeof(temp->Uid));
-            loadUserFile.read((char *)&temp->method, sizeof(bool));
-            loadUserFile.read((char *)temp->attendanceTime, sizeof(temp->attendanceTime));
-            loadUserFile.read((char *)temp->backTime, sizeof(temp->backTime));
-            loadUserFile.read((char *)&temp->simpleTime, sizeof(temp->simpleTime));
+            loadUserFile.read((char *) &temp->method, sizeof(bool));
+            loadUserFile.read((char *) temp->attendanceTime, sizeof(temp->attendanceTime));
+            loadUserFile.read((char *) temp->backTime, sizeof(temp->backTime));
+            loadUserFile.read((char *) &temp->simpleTime, sizeof(temp->simpleTime));
             if (!strlen(temp->Uid)) //½â¾öloadUserFile.eof()»á¶à²Ù×÷Ò»´ÎµÄÎÊÌâ
             {
                 flag = 1;
@@ -101,9 +102,7 @@ attendance *attendance::loadData(attendance *ahead)//ÔØÈë¿¼ÇÚÊý¾Ý£¬´¦ÀíÍ·Ö¸Õë£¬·
             temp->next = next;
             temp = temp->next;
         } while (!loadUserFile.eof());
-    }
-    else
-    {
+    } else {
         //cout << "fault,code:fun_146." << endl;
         delete[] temp;
         temp = nullptr;
