@@ -1,4 +1,3 @@
-#include "userAccount.h"
 #include "attendance.h"
 #include <iostream>
 #include <fstream>
@@ -10,33 +9,35 @@ char *simpleTime();
 char* nowTime()
 {
     static char nowTime[50];
-    time_t now = time(NULL);
-    strftime(nowTime, 50, "%Yå¹´%mæœˆ%dæ—¥ %H:%M:%S", localtime(&now));
+    time_t now = time(nullptr);
+    strftime(nowTime, 50, "%YÄê%mÔÂ%dÈÕ %H:%M:%S", localtime(&now));
     return nowTime;
 }
-char* simpleTime()
-{
+
+char *simpleTime() {
     static char simpleTime[25];
-    time_t now = time(NULL);
-    strftime(simpleTime, 50, "%Yå¹´%mæœˆ%dæ—¥", localtime(&now));
+    time_t now = time(nullptr);
+    strftime(simpleTime, 50, "%YÄê%mÔÂ%dÈÕ", localtime(&now));
     return simpleTime;
 }
-attendance *searchUserAttendance(attendance *head, char* uid)//æ‰¾åˆ°ç”¨æˆ·ç­¾åˆ°æ•°æ®è¿”å›æŒ‡é’ˆï¼Œå¦åˆ™è¿”å›Nullptr
+
+attendance *searchUserAttendance(attendance *head, char *uid)//ÕÒµ½ÓÃ»§Ç©µ½Êı¾İ·µ»ØÖ¸Õë£¬·ñÔò·µ»ØNullptr
 {
-    while(head)
-    {
-        if(head->cheakUid(uid))
+    while (head) {
+        if (head->cheakUid(uid))
             break;
         head = head->next;
     }
     return head;
 }
-attendance* userToData(userAccount *head)//å°†å½“å‰æ‰€æœ‰ç”¨æˆ·IDå†™å…¥ç­¾åˆ°æ•°æ®è¡¨ï¼Œç”¨äºç¨‹åºåˆå§‹åŒ–
+
+attendance *userToData(userAccount *head)//½«µ±Ç°ËùÓĞÓÃ»§IDĞ´ÈëÇ©µ½Êı¾İ±í£¬ÓÃÓÚ³ÌĞò³õÊ¼»¯
 {
-    attendance *ahead = new attendance();
-    attendance *nextPtr = nullptr;
-    attendance *ptr = ahead;
-    while(head)//å°†ç”¨æˆ·æ•°æ®è¡¨ä¸­çš„æ‰€æœ‰UIDå†™å…¥è€ƒå‹¤æ•°æ®è¡¨UIDï¼Œå¹¶æ„å»ºè€ƒå‹¤æ•°æ®è¡¨é•¿é“¾
+    auto *ahead = new attendance();
+    attendance *nextPtr;
+    nextPtr = nullptr;
+    auto ptr = ahead;
+    while (head)//½«ÓÃ»§Êı¾İ±íÖĞµÄËùÓĞUIDĞ´Èë¿¼ÇÚÊı¾İ±íUID£¬²¢¹¹½¨¿¼ÇÚÊı¾İ±í³¤Á´
     {
         nextPtr = new attendance();
         strcpy(ahead->Uid, head->uid);
@@ -46,60 +47,55 @@ attendance* userToData(userAccount *head)//å°†å½“å‰æ‰€æœ‰ç”¨æˆ·IDå†™å…¥ç­¾åˆ°æ•
     }
     return ptr;
 }//developer:GitHub_CSTHenry(zhengke@bytecho.net)
-void attendance::savaAttendance(attendance* ahead)//å°†è€ƒå‹¤é“¾è¡¨ä¿å­˜è‡³äºŒè¿›åˆ¶,åœ¨å¯¹è€ƒå‹¤è¿›è¡Œæ“ä½œåï¼Œå‡è¦æ‰§è¡Œæ­¤å‡½æ•°
+void attendance::savaAttendance(attendance *ahead)//½«¿¼ÇÚÁ´±í±£´æÖÁ¶ş½øÖÆ,ÔÚ¶Ô¿¼ÇÚ½øĞĞ²Ù×÷ºó£¬¾ùÒªÖ´ĞĞ´Ëº¯Êı
 {
     ofstream openUserFile("./src/attendanceData.dat", ios::binary | ios::out);//./src/attendanceData.dat
-    if (!openUserFile.fail())
-    {
-        do
-        {
-            openUserFile.write((char *)ahead->Uid, sizeof(ahead->Uid));
-            openUserFile.write((char *)&ahead->method, sizeof(bool));
-            openUserFile.write((char *)ahead->attendanceTime, sizeof(ahead->attendanceTime));
-            openUserFile.write((char *)ahead->backTime, sizeof(ahead->backTime));
+    if (!openUserFile.fail()) {
+        do {
+            openUserFile.write((char *) ahead->Uid, sizeof(ahead->Uid));
+            openUserFile.write((char *) &ahead->method, sizeof(bool));
+            openUserFile.write((char *) ahead->attendanceTime, sizeof(ahead->attendanceTime));
+            openUserFile.write((char *) ahead->backTime, sizeof(ahead->backTime));
             openUserFile.write((char *)&ahead->simpleTime, sizeof(ahead->simpleTime));
             ahead = ahead->next;
         } while (ahead);
-    }
-    else
-    {
+    } else {
         cout << "fault,code:attendanceSaveError." << endl;
         openUserFile.close();
         return;
     }
     openUserFile.close();
 }
-attendance *searchUserPtr(attendance* ahead, char *id)//æŸ¥æ‰¾è€ƒå‹¤æ•°æ®ä¸­çš„ç›¸åº”UIDï¼Œå¹¶è¿”å›å¯¹åº”æŒ‡é’ˆï¼Œæ— æ­¤UIDè¿”å›Nullptr
+
+attendance *searchUserPtr(attendance *ahead, char *id)//²éÕÒ¿¼ÇÚÊı¾İÖĞµÄÏàÓ¦UID£¬²¢·µ»Ø¶ÔÓ¦Ö¸Õë£¬ÎŞ´ËUID·µ»ØNullptr
 {
-    while(ahead)
-    {
-        if(ahead->cheakUid(id))
+    while (ahead) {
+        if (ahead->cheakUid(id))
             break;
         ahead = ahead->next;
     }
     return ahead;
 }//developer:GitHub_CSTHenry(zhengke@bytecho.net)
-attendance* attendance::loadData(attendance* ahead)//è½½å…¥è€ƒå‹¤æ•°æ®ï¼Œå¤„ç†å¤´æŒ‡é’ˆï¼Œè¿”å›å°¾æŒ‡é’ˆï¼Œè½½å…¥å¤±è´¥è¿”å›Nullptr
+attendance *attendance::loadData(attendance *ahead)//ÔØÈë¿¼ÇÚÊı¾İ£¬´¦ÀíÍ·Ö¸Õë£¬·µ»ØÎ²Ö¸Õë£¬ÔØÈëÊ§°Ü·µ»ØNullptr
 {
     int flag = 0;
     attendance *temp = ahead;
     attendance *last = nullptr;
-    ifstream loadUserFile("./src/attendanceData.dat", ios::binary | ios::in); // F:\\VSCode_Projects\\VSCode-C++\\oa\\src\\attendanceData.dat
-    if (!loadUserFile.fail())
-    {
-        do
-        {
-            loadUserFile.read((char *)temp->Uid, sizeof(temp->Uid));
+    ifstream loadUserFile("./src/attendanceData.dat",
+                          ios::binary | ios::in); // F:\\VSCode_Projects\\VSCode-C++\\oa\\src\\attendanceData.dat
+    if (!loadUserFile.fail()) {
+        do {
+            loadUserFile.read((char *) temp->Uid, sizeof(temp->Uid));
             loadUserFile.read((char *)&temp->method, sizeof(bool));
             loadUserFile.read((char *)temp->attendanceTime, sizeof(temp->attendanceTime));
             loadUserFile.read((char *)temp->backTime, sizeof(temp->backTime));
             loadUserFile.read((char *)&temp->simpleTime, sizeof(temp->simpleTime));
-            if (!strlen(temp->Uid)) //è§£å†³loadUserFile.eof()ä¼šå¤šæ“ä½œä¸€æ¬¡çš„é—®é¢˜
+            if (!strlen(temp->Uid)) //½â¾öloadUserFile.eof()»á¶à²Ù×÷Ò»´ÎµÄÎÊÌâ
             {
                 flag = 1;
                 last->next = nullptr;
             }
-            attendance *next = new attendance();
+            auto *next = new attendance();
             if (!flag)
                 last = temp;
             temp->next = next;
@@ -118,48 +114,58 @@ attendance* attendance::loadData(attendance* ahead)//è½½å…¥è€ƒå‹¤æ•°æ®ï¼Œå¤„ç†
     loadUserFile.close();
     return last;
 }
+
+string attendance::getMethod() const {
+    if (!method)
+        return "¹ÜÀíÔ±²¹Ç©";
+    return "×ÔĞĞÇ©µ½";
+}
+
 /*
-bool cheakToday(attendance* target)//åˆ¤æ–­å½“å¤©ç”¨æˆ·æ˜¯å¦ç­¾åˆ°ï¼Œä¼ å…¥ç›®æ ‡ç”¨æˆ·è€ƒå‹¤é“¾è¡¨æŒ‡é’ˆ
+bool cheakToday(attendance* target)//ÅĞ¶Ïµ±ÌìÓÃ»§ÊÇ·ñÇ©µ½£¬´«ÈëÄ¿±êÓÃ»§¿¼ÇÚÁ´±íÖ¸Õë
 {
 
 }*/
-void userAttendance(attendance *target)//ç­¾åˆ°å‡½æ•°
+void userAttendance(attendance *target)//Ç©µ½º¯Êı
 {
     target->takeAttendance(nowTime(), simpleTime(), true);
 }
-void userBack(attendance *target)//ç­¾é€€å‡½æ•°
+
+void userBack(attendance *target)//Ç©ÍËº¯Êı
 {
     target->takeBack(nowTime());
 }
-void adminAttendance(attendance *target)//è¡¥ç­¾å‡½æ•°
+
+void adminAttendance(attendance *target)//²¹Ç©º¯Êı
 {
     target->takeAttendance(nowTime(), simpleTime(), false);
 }
-void printAttendance(userAccount *head, attendance *ahead)//ç”¨äºç®¡ç†å‘˜èœå•05
+
+void printAttendance(userAccount *head, attendance *ahead)//ÓÃÓÚ¹ÜÀíÔ±²Ëµ¥05
 {
-    while(ahead && head)
-    {
-        cout << "[UIDï¼š" << head->uid << "] " << head->uName() << " " << head->search_Situation()<<" ç­¾åˆ°çŠ¶æ€->";
+    while (ahead && head) {
+        cout << "[UID£º" << head->uid << "] " << head->uName() << " " << head->search_Situation() << " Ç©µ½×´Ì¬->";
         ahead->printAdminInf(simpleTime());
         cout << endl;
         head = head->next;
         ahead = ahead->next;
     }
 }
-void addAttendance(char *newUid,attendance *last)//æ³¨å†Œæ–°ç”¨æˆ·åï¼ŒåŠ¡å¿…è°ƒç”¨æ­¤å‡½æ•°ï¼Œä¸”è°ƒç”¨æ­¤å‡½æ•°åéœ€è°ƒç”¨saveAttendance()
+
+void addAttendance(char *newUid, attendance *last)//×¢²áĞÂÓÃ»§ºó£¬Îñ±Øµ÷ÓÃ´Ëº¯Êı£¬ÇÒµ÷ÓÃ´Ëº¯ÊıºóĞèµ÷ÓÃsaveAttendance()
 {
-    attendance *nextPtr = new attendance();
+    auto *nextPtr = new attendance();
     strcpy(nextPtr->Uid, newUid);
     last->next = nextPtr;
 }//developer:GitHub_CSTHenry(zhengke@bytecho.net)
-void deleteAttendance(attendance *ahead, char* uid)//æ³¨é”€ç”¨æˆ·åï¼Œè°ƒç”¨æ­¤å‡½æ•°ï¼Œä¸”è°ƒç”¨æ­¤å‡½æ•°åéœ€è°ƒç”¨saveAttendance()
+void deleteAttendance(attendance *ahead, char *uid)//×¢ÏúÓÃ»§ºó£¬µ÷ÓÃ´Ëº¯Êı£¬ÇÒµ÷ÓÃ´Ëº¯ÊıºóĞèµ÷ÓÃsaveAttendance()
 {
     attendance *temp = ahead;
-    while(ahead)//å®šä½ç›®æ ‡UID
+    while (ahead)//¶¨Î»Ä¿±êUID
     {
-        if(ahead->cheakUid(uid))
+        if (ahead->cheakUid(uid))
             break;
-        temp = ahead;//è®°å½•å‰ä¸€èŠ‚çš„åœ°å€
+        temp = ahead;//¼ÇÂ¼Ç°Ò»½ÚµÄµØÖ·
         ahead = ahead->next;
     }
     temp->next = ahead->next;

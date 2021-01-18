@@ -4,64 +4,62 @@
 #include <iostream>
 using namespace std;
 //developer:GitHub_CSTHenry(zhengke@bytecho.net)
-class userAccount
-{
-    public:
-        char uid[12];
-        userAccount *next = nullptr;
-        void welcomeUser()
-        {
-            cout << "æ¬¢è¿Ž " << search_Situation() << " " << name << " (UID: " << uid << ")ï¼š" << endl;
+class userAccount {
+public:
+    char uid[12]{};
+    userAccount *next = nullptr;
+
+    void welcomeUser() {
+        cout << "»¶Ó­ " << search_Situation() << " " << name << " (UID: " << uid << ")£º" << endl;
+    }
+
+    static void saveUserData(userAccount *head);
+
+    [[nodiscard]] int getGroup() const {
+        return group;
+    }
+
+    static userAccount *loadUserData(userAccount *head);
+
+    void signUp(char *I, char *N, char *P, int G) {
+        strcpy(uid, I);
+        strcpy(name, N);
+        strcpy(password, P);
+        group = G;
         }
-        void saveUserData(userAccount *head);
-        int getGroup()
-        {
-            return group;
-        }
-        userAccount *loadUserData(userAccount* head);
-        void signUp(char *I,char* N,char* P,int G)
-        {
-            strcpy(uid, I);
-            strcpy(name, N);
-            strcpy(password,P);
-            group = G;
-        }
-        bool logIn(char *pass)
-        {
-            bool key = false;
-            !strcmp(pass, password) ? key = true : key = false;
-            if(key)
-                return true;
-            return false;
-        }
-        bool cheakUid(char *id)//æœ‰é‡å¤IDè¿”å›žçœŸ
-        {
-            bool key = false;
-            !strcmp(uid, id) ? key = true : key = false;
-            if(key)
-                return true;
-            return false;
-        }
-        char* uName()
-        {
-            return name;
+
+    bool logIn(char *pass) {
+        bool key;
+        !strcmp(pass, password) ? key = true : key = false;
+        if (key)
+            return true;
+        return false;
+    }
+
+    bool cheakUid(char *id)//ÓÐÖØ¸´ID·µ»ØÕæ
+    {
+        bool key;
+        !strcmp(uid, id) ? key = true : key = false;
+        if (key)
+            return true;
+        return false;
+    }
+
+    char *uName() {
+        return name;
         }
         void print_userInf();
         void print_userInfSimple();
-        string search_Situation()
-        {
-            switch(group)
-            {
-                case 1:
-                    return "ç®¡ç†å‘˜";
-                    break;
-                case 2:
-                    return "å¼€å‘è€…";
-                    break;
-                case 3:
-                    return "æ™®é€šç”¨æˆ·";
-                    break;
-                default:
+
+    [[nodiscard]] string search_Situation() const {
+        switch (group) {
+            case 1:
+                return "¹ÜÀíÔ±";
+            case 2:
+                return "¿ª·¢Õß";
+            case 3:
+                return "ÆÕÍ¨ÓÃ»§";
+            default:
                     return "error,code:searchSituation Not return.";
             }
         }
@@ -69,17 +67,18 @@ class userAccount
         {
             strcpy(name, newName);
         }
-        void passChange(char* newPass)
-        {
-            strcpy(password, newPass);
-        }
-        void groupChange(int newGroup)
-        {
-            group = newGroup;
-        }
-    private:
-        char name[10];
-        char password[17];
-        int group = 0;
+
+    void passChange(char *newPass) {
+        strcpy(password, newPass);
+    }
+
+    void groupChange(int newGroup) {
+        group = newGroup;
+    }
+
+private:
+    char name[10]{};
+    char password[17]{};
+    int group = 0;
 };
 #endif

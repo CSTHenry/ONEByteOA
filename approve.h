@@ -6,30 +6,30 @@
 
 using namespace std;
 //developer:GitHub_CSTHenry(zhengke@bytecho.net)
-class approve
-{
-    public:
-        char Uid[12] = "\0", name[10] = "\0";
-        int listNum = 0;
-        approve *next = nullptr;
-        bool statu = false;//å®¡æ‰¹çŠ¶æ€ï¼šfå®¡æ ¸ä¸­ï¼Œtå®¡æ ¸å®Œæˆï¼Œç”¨äºä¸ªäººèœå•
-        bool flag = false;//å®¡æ ¸ç»“æœï¼šté€šè¿‡ï¼Œfæ‹’ç»ï¼Œç”¨äºä¸ªäººèœå•
-        approve *loadList(approve *uahead);
-        bool getUserapp(char *uid, int num)
-        {
-            if(!strcmp(Uid, uid) && num == listNum)
-                return true;
-            else
-                return false;
-        }
-        char *reContent()//è·å–ç”³è¯·å†…å®¹ï¼Œå¯èƒ½ä¸º\0ï¼Œå–å†³äºå®¡æ‰¹æµç¨‹
-        {
-            return content;
-        }
-        char *reApply()
-        {
-            return apply;
-        }
+class approve {
+public:
+    char Uid[12] = "\0", name[10] = "\0";
+    int listNum = 0;
+    approve *next = nullptr;
+    bool statu = false;//ÉóÅú×´Ì¬£ºfÉóºËÖĞ£¬tÉóºËÍê³É£¬ÓÃÓÚ¸öÈË²Ëµ¥
+    bool flag = false;//ÉóºË½á¹û£ºtÍ¨¹ı£¬f¾Ü¾ø£¬ÓÃÓÚ¸öÈË²Ëµ¥
+    static approve *loadList(approve *uahead);
+
+    bool getUserapp(char *uid, int num) {
+        if (!strcmp(Uid, uid) && num == listNum)
+            return true;
+        else
+            return false;
+    }
+
+    char *reContent()//»ñÈ¡ÉêÇëÄÚÈİ£¬¿ÉÄÜÎª\0£¬È¡¾öÓÚÉóÅúÁ÷³Ì
+    {
+        return content;
+    }
+
+    char *reApply() {
+        return apply;
+    }
         char *reReply()
         {
             return reply;
@@ -50,34 +50,33 @@ class approve
         {
             strcpy(apply, app);
         }
-        void setReply(char *re)
-        {
-            strcpy(reply, re);
-        }
-        void cheakStatu()//è·å–å®¡æ ¸çŠ¶æ€
-        {
-            if(statu)
-            {
-                if(flag)
-                    cout << "é€š è¿‡" << endl;
-                else
-                    cout << "ä¸é€šè¿‡" << endl;
-            }
-            else
-                cout << "å®¡æ ¸ä¸­" << endl;
-        }
-        void printStatu()
-        {
-            cout << "é¡¹ç›®ï¼š" << title << " å®¡æ ¸çŠ¶æ€ï¼š";
-            cheakStatu();
-            cout << endl;
-        }
 
-    private:
-        char content[200] = "\0";//ç”³è¯·å†…å®¹ï¼ˆå¯é€‰ï¼‰
-        char title[21] = "\0";//æµç¨‹å
-        char apply[200] = "\0";//ç”³è¯·ç†ç”±
-        char reply[101] = "\0";//å®¡æ ¸æ„è§
+    void setReply(char *re) {
+        strcpy(reply, re);
+    }
+
+    void cheakStatu() const//»ñÈ¡ÉóºË×´Ì¬
+    {
+        if (statu) {
+            if (flag)
+                cout << "Í¨ ¹ı" << endl;
+            else
+                cout << "²»Í¨¹ı" << endl;
+        } else
+            cout << "ÉóºËÖĞ" << endl;
+    }
+
+    void printStatu() {
+        cout << "ÏîÄ¿£º" << title << " ÉóºË×´Ì¬£º";
+        cheakStatu();
+        cout << endl;
+    }
+
+private:
+    char content[200] = "\0";//ÉêÇëÄÚÈİ£¨¿ÉÑ¡£©
+    char title[21] = "\0";//Á÷³ÌÃû
+    char apply[200] = "\0";//ÉêÇëÀíÓÉ
+    char reply[101] = "\0";//ÉóºËÒâ¼û
 };
 
 #endif

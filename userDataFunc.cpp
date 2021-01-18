@@ -1,34 +1,46 @@
 #include "appoveFunc.cpp"
 #include "attendanceFunc.cpp"
-#include "userAccount.h"
 #include <ctime>
-#include <fstream>
+#include <random>
 #include <iostream>
+
 using namespace std;
+
 //developer:GitHub_CSTHenry(zhengke@bytecho.net)
-void randUID(int gourp, char *newUid);
+void randUID(int group, char *newUid);
+
 void userDataChange(userAccount *head, userAccount *point);
+
 bool userMenuChoice1(userAccount *head, userAccount *point);
-bool userMenuChoice2(attendance *ahead, attendance *apoint);
+
+bool userMenuChoice2(attendance *apoint);
+
 bool userMenuChoice3(userAccount *point);
+
 bool userMenuChoice4(userAccount *point);
-bool cheakUidInAdvance(userAccount *head, char *id); //æ— é‡å¤UIDè¿”å›TRUE
+
+bool cheakUidInAdvance(userAccount *head, char *id); //ÎŞÖØ¸´UID·µ»ØTRUE
 void deleteUser(userAccount *head, attendance *ahead, char *uid);
+
 bool adminMenuChoice2(userAccount *head, attendance *ahead);
+
 bool adminMenuChoice3();
+
 bool adminMenuChoice4();
+
 bool adminMenuChoice5(userAccount *head, attendance *ahead, attendance *apoint);
+
 void adminUserDataChange(userAccount *head, userAccount *target);
-bool adminMenuChoice(userAccount *head, attendance *ahead, userAccount *point); //è¿”å›trueè¡¨ç¤ºå¯¹é“¾è¡¨è¿›è¡Œäº†ä¿®æ”¹ï¼Œfalseä»£è¡¨ç›´æ¥è¿”å›
-bool userMenuChoice(userAccount *head, attendance *ahead, userAccount *point)   //è¿”å›trueè¡¨ç¤ºå¯¹é“¾è¡¨è¿›è¡Œäº†ä¿®æ”¹ï¼Œfalseä»£è¡¨ç›´æ¥è¿”å›
+
+bool adminMenuChoice(userAccount *head, attendance *ahead, userAccount *point); //·µ»Øtrue±íÊ¾¶ÔÁ´±í½øĞĞÁËĞŞ¸Ä£¬false´ú±íÖ±½Ó·µ»Ø
+bool userMenuChoice(userAccount *head, attendance *ahead, userAccount *point)   //·µ»Øtrue±íÊ¾¶ÔÁ´±í½øĞĞÁËĞŞ¸Ä£¬false´ú±íÖ±½Ó·µ»Ø
 {
     cin.clear();
     cin.sync();
     int ch = 0;
     cin >> ch;
-    while (!(ch >= 1 && ch <= 4))
-    {
-        cout << "é€‰é¡¹ä¸å­˜åœ¨ï¼Œè¯·é‡æ–°è¾“å…¥ï¼š" << endl;
+    while (!(ch >= 1 && ch <= 4)) {
+        cout << "Ñ¡Ïî²»´æÔÚ£¬ÇëÖØĞÂÊäÈë£º" << endl;
         cin >> ch;
     }
     attendance *apoint = searchUserAttendance(ahead, point->uid);
@@ -39,25 +51,21 @@ bool userMenuChoice(userAccount *head, attendance *ahead, userAccount *point)   
             return true;
         else
             return false;
-        break;
     case 2:
-        if (userMenuChoice2(ahead, apoint))
+        if (userMenuChoice2(apoint))
             return true;
         else
             return false;
-        break;
     case 3:
         if(userMenuChoice3(point))
             return true;
         else
             return false;
-        break;
     default:
         if(userMenuChoice4(point))
             return true;
         else
             return false;
-        break;
     }
 }
 bool adminMenuChoice(userAccount *head, attendance *ahead, userAccount *point)
@@ -69,7 +77,7 @@ bool adminMenuChoice(userAccount *head, attendance *ahead, userAccount *point)
     attendance *apoint = searchUserAttendance(ahead, point->uid);
     while (!(ch >= 1 && ch <= 5))
     {
-        cout << "é€‰é¡¹ä¸å­˜åœ¨ï¼Œè¯·é‡æ–°è¾“å…¥ï¼š" << endl;
+        cout << "Ñ¡Ïî²»´æÔÚ£¬ÇëÖØĞÂÊäÈë£º" << endl;
         cin >> ch;
     }
     switch (ch)
@@ -79,19 +87,16 @@ bool adminMenuChoice(userAccount *head, attendance *ahead, userAccount *point)
             return true;
         else
             return false;
-        break;
     case 2:
         if (adminMenuChoice2(head, ahead))
             return true;
         else
             return false;
-        break;
     case 3:
         if (adminMenuChoice3())
             return true;
         else
             return false;
-        break;
     case 4:
         if(adminMenuChoice4())
             return true;
@@ -102,7 +107,6 @@ bool adminMenuChoice(userAccount *head, attendance *ahead, userAccount *point)
             return true;
         else
             return false;
-        break;
     }
 }
 bool userMenuChoice1(userAccount *head, userAccount *point)
@@ -111,46 +115,42 @@ bool userMenuChoice1(userAccount *head, userAccount *point)
     cin.clear();
     cin.sync();
     point->welcomeUser();
-    cout << "ä½ çš„ä¸ªäººä¿¡æ¯å¦‚ä¸‹ï¼š" << endl;
+    cout << "ÄãµÄ¸öÈËĞÅÏ¢ÈçÏÂ£º" << endl;
     point->print_userInf();
     int uch = 0;
     cout << endl;
-    cout << "è¾“å…¥1 æ›´æ”¹ä¸ªäººä¿¡æ¯ï¼Œè¾“å…¥2 è¿”å›ä¸ªäººèœå•ï¼š" << endl;
+    cout << "ÊäÈë1 ¸ü¸Ä¸öÈËĞÅÏ¢£¬ÊäÈë2 ·µ»Ø¸öÈË²Ëµ¥£º" << endl;
     cin >> uch;
     while (uch != 1 && uch != 2)
     {
-        cout << "é€‰é¡¹ä¸å­˜åœ¨ï¼Œè¯·é‡æ–°è¾“å…¥ï¼š" << endl;
+        cout << "Ñ¡Ïî²»´æÔÚ£¬ÇëÖØĞÂÊäÈë£º" << endl;
         cin >> uch;
     }
     if (uch == 1)
     {
         userDataChange(head, point);
-        cout << "ä¿¡æ¯æ›´æ–°æˆåŠŸï¼Œè¿”å›ç”¨æˆ·èœå•ã€‚" << endl;
+        cout << "ĞÅÏ¢¸üĞÂ³É¹¦£¬·µ»ØÓÃ»§²Ëµ¥¡£" << endl;
         system("pause");
         system("CLS");
         return true;
-    }
-    else
-    {
+    } else {
         system("CLS");
         return false;
     }
 }
-bool userMenuChoice2(attendance *ahead, attendance *apoint)
-{
+
+bool userMenuChoice2(attendance *apoint) {
     int ch = 0;
     system("CLS");
-    cout << "å½“å‰ç”¨æˆ·è€ƒå‹¤ä¿¡æ¯ï¼š" << endl;
+    cout << "µ±Ç°ÓÃ»§¿¼ÇÚĞÅÏ¢£º" << endl;
     cout << endl;
-    apoint->printInf(simpleTime()); //è¾“å‡ºå½“æ—¥è€ƒå‹¤ä¿¡æ¯ï¼Œæ¸…ç©ºè¿‡æœŸä¿¡æ¯
+    apoint->printInf(simpleTime()); //Êä³öµ±ÈÕ¿¼ÇÚĞÅÏ¢£¬Çå¿Õ¹ıÆÚĞÅÏ¢
     cout << endl;
-    cout << "è¾“å…¥1 ç­¾åˆ°ï¼Œè¾“å…¥2 ç­¾é€€ï¼Œè¾“å…¥3 è¿”å›ä¸ªäººèœå•ï¼š" << endl;
+    cout << "ÊäÈë1 Ç©µ½£¬ÊäÈë2 Ç©ÍË£¬ÊäÈë3 ·µ»Ø¸öÈË²Ëµ¥£º" << endl;
     cin >> ch;
-    if (ch == 1)
-    {
-        if (strlen(apoint->getAttendanceTime()))
-        {
-            cout << "è¯·å‹¿é‡å¤ç­¾åˆ°ã€‚" << endl;
+    if (ch == 1) {
+        if (strlen(apoint->getAttendanceTime())) {
+            cout << "ÇëÎğÖØ¸´Ç©µ½¡£" << endl;
             system("pause");
             system("CLS");
             return false;
@@ -158,7 +158,7 @@ bool userMenuChoice2(attendance *ahead, attendance *apoint)
         else
         {
             userAttendance(apoint);
-            cout << "ç­¾åˆ°æˆåŠŸï¼Œç­¾åˆ°æ—¶é—´ï¼š" << nowTime() << endl;
+            cout << "Ç©µ½³É¹¦£¬Ç©µ½Ê±¼ä£º" << nowTime() << endl;
             system("pause");
             system("CLS");
             return true;
@@ -166,19 +166,16 @@ bool userMenuChoice2(attendance *ahead, attendance *apoint)
     }
     else if (ch == 2)
     {
-        if (!strcmp(apoint->getSimpleTime(), simpleTime())) //åˆ¤æ–­å½“å¤©æ˜¯å¦ç­¾åˆ°->ç­¾é€€æµç¨‹
+        if (!strcmp(apoint->getSimpleTime(), simpleTime())) //ÅĞ¶Ïµ±ÌìÊÇ·ñÇ©µ½->Ç©ÍËÁ÷³Ì
         {
-            if (strlen(apoint->getBackTime()))
-            {
-                cout << "è¯·å‹¿é‡å¤ç­¾é€€ã€‚" << endl;
+            if (strlen(apoint->getBackTime())) {
+                cout << "ÇëÎğÖØ¸´Ç©ÍË¡£" << endl;
                 system("pause");
                 system("CLS");
                 return false;
-            }
-            else
-            {
+            } else {
                 userBack(apoint);
-                cout << "ç­¾é€€æˆåŠŸï¼Œç­¾é€€æ—¶é—´ï¼š" << nowTime() << endl;
+                cout << "Ç©ÍË³É¹¦£¬Ç©ÍËÊ±¼ä£º" << nowTime() << endl;
                 system("pause");
                 system("CLS");
                 return true;
@@ -186,7 +183,7 @@ bool userMenuChoice2(attendance *ahead, attendance *apoint)
         }
         else
         {
-            cout << "è¯·ç­¾åˆ°åå†è¿›è¡Œç­¾é€€ã€‚" << endl;
+            cout << "ÇëÇ©µ½ºóÔÙ½øĞĞÇ©ÍË¡£" << endl;
             system("pause");
             system("CLS");
             return false;
@@ -198,49 +195,47 @@ bool userMenuChoice2(attendance *ahead, attendance *apoint)
         return false;
     }
 }
-bool userMenuChoice3(userAccount *point)
-{
+bool userMenuChoice3(userAccount *point) {
     system("CLS");
     char ch = 'n';
     int num = 0;
     char content[200] = "\0", apply[200] = "\0";
-    approveList *aphead = new approveList();
-    approve *uahead = new approve();
+    auto *aphead = new approveList();
+    auto *uahead = new approve();
     approve *cheak = uahead;
     approveList *temp = aphead;
     uahead->loadList(uahead);
-    if (!aphead->loadList(aphead))
-    {
-        cout << "æš‚æ— å¯ç”¨ç”³è¯·é¡¹ç›®ï¼Œè¿”å›ç”¨æˆ·èœå•ã€‚" << endl;
+    if (!aphead->loadList(aphead)) {
+        cout << "ÔİÎŞ¿ÉÓÃÉêÇëÏîÄ¿£¬·µ»ØÓÃ»§²Ëµ¥¡£" << endl;
         system("pause");
         system("CLS");
         return false;
     }
     else
     {
-        cout << "å¯ç”¨ç”³è¯·é¡¹ç›®ï¼š" << endl;
+        cout << "¿ÉÓÃÉêÇëÏîÄ¿£º" << endl;
         cout << endl;
-        cout << "[ç¼–å·]"
+        cout << "[±àºÅ]"
              << "\t"
-             << "[å®¡æ‰¹é¡¹ç›®]"
+             << "[ÉóÅúÏîÄ¿]"
              << "\t"
-             << "[æ˜¯å¦å¡«å†™ç”³è¯·å†…å®¹]" << endl;
+             << "[ÊÇ·ñÌîĞ´ÉêÇëÄÚÈİ]" << endl;
         while (aphead)
         {
             cout << aphead->listNum << "\t" << aphead->reListTitle() << "\t";
             if (aphead->isContent)
-                cout << "æ˜¯" << endl;
+                cout << "ÊÇ" << endl;
             else
-                cout << "å¦" << endl;
+                cout << "·ñ" << endl;
             aphead = aphead->next;
         }
         aphead = temp;
         cout << endl;
-        cout << "è¾“å…¥y å»ºç«‹æ–°çš„ç”³è¯·ï¼Œè¾“å…¥n è¿”å›ç”¨æˆ·èœå•ï¼š" << endl;
+        cout << "ÊäÈëy ½¨Á¢ĞÂµÄÉêÇë£¬ÊäÈën ·µ»ØÓÃ»§²Ëµ¥£º" << endl;
         cin >> ch;
         if(ch == 'y' || ch == 'Y')
         {
-            cout << "è¯·è¾“å…¥éœ€è¦ç”³è¯·çš„é¡¹ç›®ç¼–å·ï¼š" << endl;
+            cout << "ÇëÊäÈëĞèÒªÉêÇëµÄÏîÄ¿±àºÅ£º" << endl;
         re:
             cin >> num;
             while(aphead)
@@ -251,14 +246,13 @@ bool userMenuChoice3(userAccount *point)
             }
             while(!aphead)
             {
-                cout << "è¯¥ç¼–å·ä¸å­˜åœ¨ï¼Œè¯·é‡æ–°è¾“å…¥ï¼š" << endl;
+                cout << "¸Ã±àºÅ²»´æÔÚ£¬ÇëÖØĞÂÊäÈë£º" << endl;
                 goto re;
             }
             while(cheak)
             {
-                if(cheak->listNum == num && !strcmp(cheak->Uid, point->uid))
-                {
-                    cout << "è¯·å‹¿é‡å¤ç”³è¯·åŒä¸€ä¸ªé¡¹ç›®ï¼Œè¯·è”ç³»ç®¡ç†å‘˜åŠæ—¶å®¡æ‰¹ã€‚" << endl;
+                if (cheak->listNum == num && !strcmp(cheak->Uid, point->uid)) {
+                    cout << "ÇëÎğÖØ¸´ÉêÇëÍ¬Ò»¸öÏîÄ¿£¬ÇëÁªÏµ¹ÜÀíÔ±¼°Ê±ÉóÅú¡£" << endl;
                     system("pause");
                     system("CLS");
                     return false;
@@ -266,17 +260,16 @@ bool userMenuChoice3(userAccount *point)
                 cheak = cheak->next;
             }
             system("CLS");
-            cout << "æ­£åœ¨ç”³è¯· [" << aphead->reListTitle() << "] :" << endl;
-            cout << "ç”³è¯·è¯´æ˜ï¼š" << aphead->reListTips() << endl;
-            if(aphead->isContent)
-            {
-                cout << "è¯·è¾“å…¥ç”³è¯·å†…å®¹ï¼ˆ100å­—ä»¥å†…ï¼‰ï¼š" << endl;
+            cout << "ÕıÔÚÉêÇë [" << aphead->reListTitle() << "] :" << endl;
+            cout << "ÉêÇëËµÃ÷£º" << aphead->reListTips() << endl;
+            if (aphead->isContent) {
+                cout << "ÇëÊäÈëÉêÇëÄÚÈİ£¨100×ÖÒÔÄÚ£©£º" << endl;
                 cin >> content;
             }
-            cout << "è¯·è¾“å…¥ç”³è¯·ç†ç”±ï¼ˆ100å­—ä»¥å†…ï¼‰ï¼š" << endl;
+            cout << "ÇëÊäÈëÉêÇëÀíÓÉ£¨100×ÖÒÔÄÚ£©£º" << endl;
             cin >> apply;
             addApprove(uahead, aphead, point->uid, point->uName(), apply, content);
-            cout << "ç”³è¯·æˆåŠŸï¼Œç”³è¯·è¿›åº¦è¯·è¿”å›ç”¨æˆ·èœå•æŸ¥çœ‹ã€‚" << endl;
+            cout << "ÉêÇë³É¹¦£¬ÉêÇë½ø¶ÈÇë·µ»ØÓÃ»§²Ëµ¥²é¿´¡£" << endl;
             system("pause");
             system("CLS");
         }
@@ -289,7 +282,7 @@ bool userMenuChoice3(userAccount *point)
 }
 bool userMenuChoice4(userAccount *point)
 {
-    approve *uahead = new approve();
+    auto *uahead = new approve();
     uahead->loadList(uahead);
     if(getUserApprove(point, uahead))
         editApprove(uahead, point->uid);
@@ -301,30 +294,30 @@ bool adminMenuChoice2(userAccount *head, attendance *ahead)
     cin.sync();
     int ch = 0;
     char uid[12] = "\0";
-    userAccount *target = nullptr;
+    userAccount *target;
     target = head;
     system("CLS");
-    cout << "ç”¨æˆ·åˆ—è¡¨ï¼ˆUID å§“å èŒä½ï¼‰ï¼š" << endl;
+    cout << "ÓÃ»§ÁĞ±í£¨UID ĞÕÃû Ö°Î»£©£º" << endl;
     while (target)
     {
         target->print_userInfSimple();
         target = target->next;
     }
     cout << endl;
-    cout << "è¾“å…¥1 ç¼–è¾‘ç”¨æˆ·ä¿¡æ¯ï¼Œè¾“å…¥2 æ³¨é”€ç”¨æˆ·è´¦å·ï¼Œè¾“å…¥3 è¿”å›ç®¡ç†å‘˜èœå•ï¼š" << endl;
+    cout << "ÊäÈë1 ±à¼­ÓÃ»§ĞÅÏ¢£¬ÊäÈë2 ×¢ÏúÓÃ»§ÕËºÅ£¬ÊäÈë3 ·µ»Ø¹ÜÀíÔ±²Ëµ¥£º" << endl;
     cin >> ch;
     while (ch != 1 && ch != 2 && ch != 3)
     {
-        cout << "é€‰é¡¹ä¸å­˜åœ¨ï¼Œè¯·é‡æ–°è¾“å…¥ï¼š";
+        cout << "Ñ¡Ïî²»´æÔÚ£¬ÇëÖØĞÂÊäÈë£º";
         cin >> ch;
     }
     if (ch == 1)
     { //developer:GitHub_CSTHenry(zhengke@bytecho.net)
-        cout << "è¯·è¾“å…¥éœ€è¦ç¼–è¾‘çš„ç”¨æˆ·UIDï¼š" << endl;
+        cout << "ÇëÊäÈëĞèÒª±à¼­µÄÓÃ»§UID£º" << endl;
     recin:
         cin >> uid;
         target = head;
-        while (target) //å°†targetæŒ‡å‘éœ€è¦ç¼–è¾‘çš„ç”¨æˆ·å¯¹è±¡
+        while (target) //½«targetÖ¸ÏòĞèÒª±à¼­µÄÓÃ»§¶ÔÏó
         {
             if (target->cheakUid(uid))
                 break;
@@ -334,18 +327,18 @@ bool adminMenuChoice2(userAccount *head, attendance *ahead)
             adminUserDataChange(head, target);
         else
         {
-            cout << "UIDï¼š" << uid << "ä¸å­˜åœ¨ï¼Œè¯·é‡æ–°è¾“å…¥ï¼š" << endl;
+            cout << "UID£º" << uid << "²»´æÔÚ£¬ÇëÖØĞÂÊäÈë£º" << endl;
             goto recin;
         }
         return true;
     }
     else if (ch == 2)
     {
-        cout << "è¯·è¾“å…¥éœ€è¦æ³¨é”€çš„ç”¨æˆ·UIDï¼ˆè°¨æ…æ“ä½œï¼‰ï¼š" << endl;
+        cout << "ÇëÊäÈëĞèÒª×¢ÏúµÄÓÃ»§UID£¨½÷É÷²Ù×÷£©£º" << endl;
     recin2:
         cin >> uid;
         target = head;
-        while (target) //å°†targetæŒ‡å‘éœ€è¦ç¼–è¾‘çš„ç”¨æˆ·å¯¹è±¡
+        while (target) //½«targetÖ¸ÏòĞèÒª±à¼­µÄÓÃ»§¶ÔÏó
         {
             if (target->cheakUid(uid))
                 break;
@@ -355,28 +348,25 @@ bool adminMenuChoice2(userAccount *head, attendance *ahead)
             deleteUser(head, ahead, uid);
         else
         {
-            cout << "UIDï¼š" << uid << "ä¸å­˜åœ¨ï¼Œè¯·é‡æ–°è¾“å…¥ï¼š" << endl;
+            cout << "UID£º" << uid << "²»´æÔÚ£¬ÇëÖØĞÂÊäÈë£º" << endl;
             goto recin2;
         }
         return true;
-    }
-    else
-    {
+    } else {
         system("CLS");
         return false;
     }
 }
-bool adminMenuChoice3() //è¿™ä¸ªå‡½æ•°å±å®å†™å¾—åƒåœ¾ã€‚ã€‚ã€‚ä½†æ— æ‰€è°“
+
+bool adminMenuChoice3() //Õâ¸öº¯ÊıÊôÊµĞ´µÃÀ¬»ø¡£¡£¡£µ«ÎŞËùÎ½
 {
     int num = 0;
-    approveList *target = nullptr;
-    approveList *aphead = new approveList();
+    auto *aphead = new approveList();
     char title[21] = "\0", tips[100] = "\0";
     char ch = '\0';
     system("CLS");
-    if (!aphead->loadList(aphead))
-    {
-        cout << "æš‚æ— å®¡æ‰¹æµç¨‹ï¼Œè¾“å…¥y åˆ›å»ºå®¡æ‰¹æµç¨‹ï¼Œè¾“å…¥n è¿”å›ç®¡ç†å‘˜èœå•ï¼š" << endl;
+    if (!aphead->loadList(aphead)) {
+        cout << "ÔİÎŞÉóÅúÁ÷³Ì£¬ÊäÈëy ´´½¨ÉóÅúÁ÷³Ì£¬ÊäÈën ·µ»Ø¹ÜÀíÔ±²Ëµ¥£º" << endl;
         cin >> ch;
         if (!(ch == 'y' || ch == 'Y'))
         {
@@ -386,42 +376,40 @@ bool adminMenuChoice3() //è¿™ä¸ªå‡½æ•°å±å®å†™å¾—åƒåœ¾ã€‚ã€‚ã€‚ä½†æ— æ‰€è°“
         else
         {
         create:
-            cout << "è¯·è¾“å…¥å®¡æ‰¹é¡¹ç›®åç§°ï¼ˆ10å­—ä»¥å†…ï¼‰ï¼š" << endl;
+            cout << "ÇëÊäÈëÉóÅúÏîÄ¿Ãû³Æ£¨10×ÖÒÔÄÚ£©£º" << endl;
             cin >> title;
-            cout << "è¯·è¾“å…¥å®¡æ‰¹æç¤º/æŒ‡å¼•ï¼ˆ50å­—ä»¥å†…ï¼‰ï¼š" << endl;
+            cout << "ÇëÊäÈëÉóÅúÌáÊ¾/Ö¸Òı£¨50×ÖÒÔÄÚ£©£º" << endl;
             cin >> tips;
-            cout << "æ˜¯å¦å¼€å¯å®¡æ‰¹å†…å®¹é€‰å¡«æ¡†ï¼ˆyå¼€å¯nå…³é—­ï¼‰ï¼Ÿ" << endl;
+            cout << "ÊÇ·ñ¿ªÆôÉóÅúÄÚÈİÑ¡Ìî¿ò£¨y¿ªÆôn¹Ø±Õ£©£¿" << endl;
             cin >> ch;
             if (!(ch == 'y' || ch == 'Y'))
                 addList(aphead, title, tips, false);
             else
                 addList(aphead, title, tips, true);
-            cout << "åˆ›å»ºæµç¨‹å®Œæˆã€‚" << endl;
+            cout << "´´½¨Á÷³ÌÍê³É¡£" << endl;
             system("pause");
             system("CLS");
         }
     }
-    else
-    {
-        cout << "å·²åˆ›å»ºçš„å®¡æ‰¹æµç¨‹ï¼š" << endl;
-        cout << "[ç¼–å·]"
+    else {
+        cout << "ÒÑ´´½¨µÄÉóÅúÁ÷³Ì£º" << endl;
+        cout << "[±àºÅ]"
              << "\t"
-             << "[å®¡æ‰¹é¡¹ç›®]"
+             << "[ÉóÅúÏîÄ¿]"
              << "\t"
-             << "[æ˜¯å¦å¡«å†™ç”³è¯·å†…å®¹]" << endl;
+             << "[ÊÇ·ñÌîĞ´ÉêÇëÄÚÈİ]" << endl;
         approveList *temp = aphead;
-        while (aphead)
-        {
+        while (aphead) {
             cout << aphead->listNum << "\t" << aphead->reListTitle() << "\t";
             if (aphead->isContent)
-                cout << "æ˜¯" << endl;
+                cout << "ÊÇ" << endl;
             else
-                cout << "å¦" << endl;
+                cout << "·ñ" << endl;
             aphead = aphead->next;
         }
         aphead = temp;
         cout << endl;
-        cout << "è¾“å…¥a ç¼–è¾‘å®¡æ‰¹æµç¨‹ï¼Œè¾“å…¥b æ·»åŠ å®¡æ‰¹æµç¨‹ï¼Œè¾“å…¥c åˆ é™¤å®¡æ‰¹æµç¨‹ï¼Œè¾“å…¥d è¿”å›ç®¡ç†å‘˜èœå•ï¼š" << endl;
+        cout << "ÊäÈëa ±à¼­ÉóÅúÁ÷³Ì£¬ÊäÈëb Ìí¼ÓÉóÅúÁ÷³Ì£¬ÊäÈëc É¾³ıÉóÅúÁ÷³Ì£¬ÊäÈëd ·µ»Ø¹ÜÀíÔ±²Ëµ¥£º" << endl;
         cin >> ch;
         switch (ch)
         {
@@ -432,23 +420,20 @@ bool adminMenuChoice3() //è¿™ä¸ªå‡½æ•°å±å®å†™å¾—åƒåœ¾ã€‚ã€‚ã€‚ä½†æ— æ‰€è°“
             break;
         case 'b':
             goto create;
-            break;
         case 'c':
-            cout << "è¯·è¾“å…¥éœ€è¦åˆ é™¤çš„æµç¨‹ç¼–å·ï¼š" << endl;
+            cout << "ÇëÊäÈëĞèÒªÉ¾³ıµÄÁ÷³Ì±àºÅ£º" << endl;
             cin >> num;
-            while(num == 1)
-            {
-                cout << "ç¨‹åºä¸å…è®¸åˆ é™¤ç¬¬ä¸€ä¸ªå®¡æ‰¹æµç¨‹ï¼Œè¯·é‡æ–°è¾“å…¥ï¼š" << endl;
-                cin >> num;
-            }
-            while (!(target = appSearch(aphead, num)))
-            {
-                cout << "æœªæ£€ç´¢åˆ°å¯¹äºçš„æµç¨‹ï¼Œè¯·é‡æ–°è¾“å…¥ï¼š" << endl;
-                cin >> num;
-            }
-            deleteList(aphead, num);
-            cout << "åˆ é™¤æµç¨‹æˆåŠŸã€‚" << endl;
-            saveList(aphead);
+                while (num == 1) {
+                    cout << "³ÌĞò²»ÔÊĞíÉ¾³ıµÚÒ»¸öÉóÅúÁ÷³Ì£¬ÇëÖØĞÂÊäÈë£º" << endl;
+                    cin >> num;
+                }
+                while (!appSearch(aphead, num)) {
+                    cout << "Î´¼ìË÷µ½¶ÔÓÚµÄÁ÷³Ì£¬ÇëÖØĞÂÊäÈë£º" << endl;
+                    cin >> num;
+                }
+                deleteList(aphead, num);
+                cout << "É¾³ıÁ÷³Ì³É¹¦¡£" << endl;
+                saveList(aphead);
             system("pause");
             system("CLS");
             break;
@@ -463,7 +448,7 @@ bool adminMenuChoice4()
 {
     int num = 0;
     char targetUid[10] = "\0", ch = 'n';
-    approve *uahead = new approve();
+    auto *uahead = new approve();
     approve *head = uahead;
     uahead->loadList(uahead);
     if (!getList(uahead))
@@ -475,19 +460,19 @@ bool adminMenuChoice4()
     else
     {
         cout << endl;
-        cout << "è¾“å…¥y è¿›è¡Œå®¡æ ¸ï¼Œè¾“å…¥n è¿”å›ç®¡ç†å‘˜èœå•ï¼š" << endl;
+        cout << "ÊäÈëy ½øĞĞÉóºË£¬ÊäÈën ·µ»Ø¹ÜÀíÔ±²Ëµ¥£º" << endl;
         cin >> ch;
         if(ch == 'N'||ch == 'n')
         {
             system("CLS");
             return false;
         }
-        cout << "è¾“å…¥ç”¨æˆ·UIDåŠå…¶å¯¹åº”ç”³è¯·ç¼–å·è¿›è¡Œå®¡æ ¸" << endl;
+        cout << "ÊäÈëÓÃ»§UID¼°Æä¶ÔÓ¦ÉêÇë±àºÅ½øĞĞÉóºË" << endl;
     re:
         uahead = head;
-        cout << "è¯·è¾“å…¥ç”¨æˆ·UIDï¼š" << endl;
+        cout << "ÇëÊäÈëÓÃ»§UID£º" << endl;
         cin >> targetUid;
-        cout << "è¯·è¾“å…¥ç”³è¯·ç¼–å·ï¼š" << endl;
+        cout << "ÇëÊäÈëÉêÇë±àºÅ£º" << endl;
         cin >> num;
         while (uahead)
         {
@@ -497,59 +482,52 @@ bool adminMenuChoice4()
         }
         if (!uahead)
         {
-            cout << "æœªæ£€ç´¢åˆ°ç›¸åº”ç”³è¯·ä¿¡æ¯ï¼Œè¯·é‡æ–°è¾“å…¥ï¼š" << endl;
+            cout << "Î´¼ìË÷µ½ÏàÓ¦ÉêÇëĞÅÏ¢£¬ÇëÖØĞÂÊäÈë£º" << endl;
             goto re;
         }
         adminApprove(uahead);
         cout << endl;
-        cout << "å®¡æ ¸å®Œæˆï¼Œè¿”å›ç®¡ç†å‘˜èœå•" << endl;
+        cout << "ÉóºËÍê³É£¬·µ»Ø¹ÜÀíÔ±²Ëµ¥" << endl;
         saveApprove(head);
         system("pause");
         system("CLS");
     }
     return true;
 }
-bool adminMenuChoice5(userAccount *head, attendance *ahead, attendance *apoint)
-{
+bool adminMenuChoice5(userAccount *head, attendance *ahead, attendance *apoint) {
     cin.clear();
     cin.sync();
     int ch = 0;
     char Uid[12] = "\0";
     attendance *aTarget = ahead;
     system("CLS");
-    cout << "ç”¨æˆ·è€ƒå‹¤ä¿¡æ¯å¦‚ä¸‹ï¼š" << endl;
+    cout << "ÓÃ»§¿¼ÇÚĞÅÏ¢ÈçÏÂ£º" << endl;
     cout << endl;
-    printAttendance(head, ahead); //è¾“å‡ºç”¨æˆ·å½“æ—¥è€ƒå‹¤ä¿¡æ¯ï¼Œå¹¶æ¸…ç©ºè¿‡æœŸä¿¡æ¯
+    printAttendance(head, ahead); //Êä³öÓÃ»§µ±ÈÕ¿¼ÇÚĞÅÏ¢£¬²¢Çå¿Õ¹ıÆÚĞÅÏ¢
     cout << endl;
-    cout << "è¾“å…¥1 è¡¥ç­¾ç”¨æˆ·ï¼Œè¾“å…¥2 ç®¡ç†å‘˜ç­¾åˆ°ï¼Œè¾“å…¥3 ç®¡ç†å‘˜ç­¾é€€ï¼Œè¾“å…¥4 è¿”å›ç®¡ç†å‘˜èœå•ï¼š" << endl;
+    cout << "ÊäÈë1 ²¹Ç©ÓÃ»§£¬ÊäÈë2 ¹ÜÀíÔ±Ç©µ½£¬ÊäÈë3 ¹ÜÀíÔ±Ç©ÍË£¬ÊäÈë4 ·µ»Ø¹ÜÀíÔ±²Ëµ¥£º" << endl;
     cin >> ch;
-    while (ch < 1 && ch > 4)
-    {
-        cout << "é€‰é¡¹ä¸å­˜åœ¨ï¼Œè¯·é‡æ–°è¾“å…¥ï¼š" << endl;
-        cin >> ch;
-    }
-    switch (ch)
-    {
-    case 1:
-        cout << "è¯·è¾“å…¥éœ€è¦è¡¥ç­¾çš„ç”¨æˆ·UIDï¼š" << endl;
-    recin:
-        cin >> Uid;
-        while (aTarget) //å°†targetæŒ‡å‘éœ€è¦ç¼–è¾‘çš„ç”¨æˆ·å¯¹è±¡
-        {
-            if (aTarget->cheakUid(Uid))
-                break;
-            aTarget = aTarget->next;
-        }
+    switch (ch) {
+        case 1:
+            cout << "ÇëÊäÈëĞèÒª²¹Ç©µÄÓÃ»§UID£º" << endl;
+        recin:
+            cin >> Uid;
+            while (aTarget) //½«targetÖ¸ÏòĞèÒª±à¼­µÄÓÃ»§¶ÔÏó
+            {
+                if (aTarget->cheakUid(Uid))
+                    break;
+                aTarget = aTarget->next;
+            }
         if (aTarget)
         {
             if (!strlen(aTarget->getAttendanceTime()))
             {
                 adminAttendance(aTarget);
-                cout << "UIDï¼š" << Uid << "è¡¥ç­¾å®Œæˆï¼Œè¡¥ç­¾æ—¶é—´ï¼š" << nowTime() << endl;
+                cout << "UID£º" << Uid << "²¹Ç©Íê³É£¬²¹Ç©Ê±¼ä£º" << nowTime() << endl;
             }
             else
             {
-                cout << "UIDï¼š" << Uid << "å·²ç­¾åˆ°ï¼Œæ— éœ€è¡¥ç­¾" << endl;
+                cout << "UID£º" << Uid << "ÒÑÇ©µ½£¬ÎŞĞè²¹Ç©" << endl;
                 return false;
             }
             system("pause");
@@ -557,15 +535,14 @@ bool adminMenuChoice5(userAccount *head, attendance *ahead, attendance *apoint)
         }
         else
         {
-            cout << "UIDï¼š" << Uid << "ä¸å­˜åœ¨ï¼Œè¯·é‡æ–°è¾“å…¥ï¼š" << endl;
+            cout << "UID£º" << Uid << "²»´æÔÚ£¬ÇëÖØĞÂÊäÈë£º" << endl;
             goto recin;
         }
         return true;
-        break;
     case 2:
         if (strlen(apoint->getAttendanceTime()))
         {
-            cout << "è¯·å‹¿é‡å¤ç­¾åˆ°ã€‚" << endl;
+            cout << "ÇëÎğÖØ¸´Ç©µ½¡£" << endl;
             system("pause");
             system("CLS");
             return false;
@@ -573,26 +550,22 @@ bool adminMenuChoice5(userAccount *head, attendance *ahead, attendance *apoint)
         else
         {
             userAttendance(apoint);
-            cout << "ç­¾åˆ°æˆåŠŸï¼Œç­¾åˆ°æ—¶é—´ï¼š" << nowTime() << endl;
+            cout << "Ç©µ½³É¹¦£¬Ç©µ½Ê±¼ä£º" << nowTime() << endl;
             system("pause");
             system("CLS");
             return true;
         }
-        break;
     case 3:
-        if (!strcmp(apoint->getSimpleTime(), simpleTime())) //åˆ¤æ–­å½“å¤©æ˜¯å¦ç­¾åˆ°->ç­¾é€€æµç¨‹
+        if (!strcmp(apoint->getSimpleTime(), simpleTime())) //ÅĞ¶Ïµ±ÌìÊÇ·ñÇ©µ½->Ç©ÍËÁ÷³Ì
         {
-            if (strlen(apoint->getBackTime()))
-            {
-                cout << "è¯·å‹¿é‡å¤ç­¾é€€ã€‚" << endl;
+            if (strlen(apoint->getBackTime())) {
+                cout << "ÇëÎğÖØ¸´Ç©ÍË¡£" << endl;
                 system("pause");
                 system("CLS");
                 return false;
-            }
-            else
-            {
+            } else {
                 userBack(apoint);
-                cout << "ç­¾é€€æˆåŠŸï¼Œç­¾é€€æ—¶é—´ï¼š" << nowTime() << endl;
+                cout << "Ç©ÍË³É¹¦£¬Ç©ÍËÊ±¼ä£º" << nowTime() << endl;
                 system("pause");
                 system("CLS");
                 return true;
@@ -600,16 +573,14 @@ bool adminMenuChoice5(userAccount *head, attendance *ahead, attendance *apoint)
         }
         else
         {
-            cout << "è¯·ç­¾åˆ°åå†è¿›è¡Œç­¾é€€ã€‚" << endl;
+            cout << "ÇëÇ©µ½ºóÔÙ½øĞĞÇ©ÍË¡£" << endl;
             system("pause");
             system("CLS");
             return false;
         }
-        break;
     default:
         system("CLS");
         return false;
-        break;
     }
 } //developer:GitHub_CSTHenry(zhengke@bytecho.net)
 void userDataChange(userAccount *head, userAccount *point)
@@ -619,29 +590,25 @@ void userDataChange(userAccount *head, userAccount *point)
     int ch = 0;
     char newName[10] = "\0", newPass[17] = "\0", newUid[12] = "\0";
     system("CLS");
-    if (point->search_Situation() == "ç®¡ç†å‘˜")
-    {
-        cout << "ä¿¡æ¯ä¿®æ”¹ï¼ˆè¾“å…¥1 ä¿®æ”¹å§“åï¼Œè¾“å…¥2 ä¿®æ”¹å¯†ç ï¼Œè¾“å…¥3 ä¿®æ”¹UIDï¼‰ï¼š" << endl;
+    if (point->search_Situation() == "¹ÜÀíÔ±") {
+        cout << "ĞÅÏ¢ĞŞ¸Ä£¨ÊäÈë1 ĞŞ¸ÄĞÕÃû£¬ÊäÈë2 ĞŞ¸ÄÃÜÂë£¬ÊäÈë3 ĞŞ¸ÄUID£©£º" << endl;
         cin >> ch;
-        while (ch != 1 && ch != 2 && ch != 3)
-        {
-            cout << "é€‰é¡¹ä¸å­˜åœ¨ï¼Œè¯·é‡æ–°è¾“å…¥ï¼š" << endl;
+        while (ch != 1 && ch != 2 && ch != 3) {
+            cout << "Ñ¡Ïî²»´æÔÚ£¬ÇëÖØĞÂÊäÈë£º" << endl;
             cin >> ch;
         }
-        if (ch == 3)
-        {
-            cout << "è¯·æ³¨æ„ï¼šUIDä¸ºç™»å½•å‡­è¯ï¼Œè¯·è°¨æ…ä¿®æ”¹ï¼Œä¿®æ”¹å®Œæˆåéœ€ä½¿ç”¨æ–°UIDç™»å½•ã€‚" << endl;
-            cout << "è¯·è¾“å…¥æ–°çš„UIDï¼ˆå­—æ¯æˆ–æ•°å­—ï¼‰ï¼š" << endl;
+        if (ch == 3) {
+            cout << "Çë×¢Òâ£ºUIDÎªµÇÂ¼Æ¾Ö¤£¬Çë½÷É÷ĞŞ¸Ä£¬ĞŞ¸ÄÍê³ÉºóĞèÊ¹ÓÃĞÂUIDµÇÂ¼¡£" << endl;
+            cout << "ÇëÊäÈëĞÂµÄUID£¨×ÖÄ¸»òÊı×Ö£©£º" << endl;
             cin >> newUid;
             /*
             while (!(newUid >= 1000 && newUid <= 1000000000))
             {
-                cout << "UIDè¶Šç•Œï¼Œè¯·é‡æ–°è¾“å…¥ï¼š" << endl;
+                cout << "UIDÔ½½ç£¬ÇëÖØĞÂÊäÈë£º" << endl;
                 cin >> newUid;
             }*/
-            while (!cheakUidInAdvance(head, newUid))
-            {
-                cout << "å½“å‰UIDï¼š" << newUid << " å·²å­˜åœ¨ï¼Œè¯·é‡æ–°è¾“å…¥ï¼š" << endl;
+            while (!cheakUidInAdvance(head, newUid)) {
+                cout << "µ±Ç°UID£º" << newUid << " ÒÑ´æÔÚ£¬ÇëÖØĞÂÊäÈë£º" << endl;
                 cin >> newUid;
             }
             strcpy(point->uid, newUid);
@@ -651,28 +618,28 @@ void userDataChange(userAccount *head, userAccount *point)
     }
     else
     {
-        cout << "è¾“å…¥1 ä¿®æ”¹å§“åï¼Œè¾“å…¥2ä¿®æ”¹å¯†ç ï¼š" << endl;
+        cout << "ÊäÈë1 ĞŞ¸ÄĞÕÃû£¬ÊäÈë2ĞŞ¸ÄÃÜÂë£º" << endl;
         cin >> ch;
     userModel:
         while (ch != 1 && ch != 2)
         {
-            cout << "é€‰é¡¹ä¸å­˜åœ¨ï¼Œè¯·é‡æ–°è¾“å…¥ï¼š" << endl;
+            cout << "Ñ¡Ïî²»´æÔÚ£¬ÇëÖØĞÂÊäÈë£º" << endl;
             cin >> ch;
         }
         if (ch == 1)
         {
-            cout << "è¯·è¾“å…¥æ–°çš„å§“åï¼ˆUIDåŠç”¨æˆ·ç»„è¯·è”ç³»ç®¡ç†å‘˜ä¿®æ”¹ï¼‰ï¼š" << endl;
+            cout << "ÇëÊäÈëĞÂµÄĞÕÃû£¨UID¼°ÓÃ»§×éÇëÁªÏµ¹ÜÀíÔ±ĞŞ¸Ä£©£º" << endl;
             cin >> newName;
             point->nameChange(newName);
         }
         else
         {
-            cout << "è¯·è¾“å…¥æ–°çš„å¯†ç ï¼ˆ<=16ä½ï¼‰ï¼š" << endl;
+            cout << "ÇëÊäÈëĞÂµÄÃÜÂë£¨<=16Î»£©£º" << endl;
             cin >> newPass;
             point->passChange(newPass);
         }
     }
-    cout << "ä¿®æ”¹æˆåŠŸï¼Œè¿”å›ç”¨æˆ·èœå•ã€‚" << endl;
+    cout << "ĞŞ¸Ä³É¹¦£¬·µ»ØÓÃ»§²Ëµ¥¡£" << endl;
     system("pause");
     system("CLS");
 }
@@ -683,88 +650,87 @@ void adminUserDataChange(userAccount *head, userAccount *target)
     int ch = 0, newgroup = -1;
     char newName[10] = "\0", newPass[17] = "\0", newUid[12] = "\0";
     system("CLS");
-    cout << "æ­£åœ¨è¢«ç¼–è¾‘çš„ç”¨æˆ·ä¿¡æ¯å¦‚ä¸‹ï¼š" << endl;
+    cout << "ÕıÔÚ±»±à¼­µÄÓÃ»§ĞÅÏ¢ÈçÏÂ£º" << endl;
     cout << endl;
     target->print_userInfSimple();
     cout << endl;
-    cout << "è¾“å…¥1 ä¿®æ”¹UIDï¼ˆè°¨æ…æ“ä½œï¼‰ï¼Œè¾“å…¥2 ä¿®æ”¹å§“åï¼Œè¾“å…¥3 ä¿®æ”¹ç”¨æˆ·ç»„ï¼ˆèŒä½ï¼‰ï¼Œè¾“å…¥4 ä¿®æ”¹å¯†ç ï¼ˆè°¨æ…æ“ä½œï¼‰ï¼š" << endl;
+    cout << "ÊäÈë1 ĞŞ¸ÄUID£¨½÷É÷²Ù×÷£©£¬ÊäÈë2 ĞŞ¸ÄĞÕÃû£¬ÊäÈë3 ĞŞ¸ÄÓÃ»§×é£¨Ö°Î»£©£¬ÊäÈë4 ĞŞ¸ÄÃÜÂë£¨½÷É÷²Ù×÷£©£º" << endl;
     cin >> ch;
     while (ch < 1 && ch > 4)
     {
-        cout << "é€‰é¡¹ä¸å­˜åœ¨ï¼Œè¯·é‡æ–°è¾“å…¥ï¼š" << endl;
+        cout << "Ñ¡Ïî²»´æÔÚ£¬ÇëÖØĞÂÊäÈë£º" << endl;
         cin >> ch;
     }
-    switch (ch)
-    { //developer:GitHub_CSTHenry(zhengke@bytecho.net)
-    case 1:
-        system("CLS");
-        cout << "è¯·æ³¨æ„ï¼šUIDä¸ºç™»å½•å‡­è¯ï¼Œè¯·è°¨æ…ä¿®æ”¹ï¼Œä¿®æ”¹å®Œæˆåéœ€ä½¿ç”¨æ–°UIDç™»å½•ã€‚" << endl;
-        cout << "æ­£åœ¨æ›´æ”¹ " << target->uName() << " çš„UIDï¼Œ"
-             << "è¯·è¾“å…¥æ–°çš„UIDï¼š" << endl;
-        cin >> newUid;
-        /*
-            while (!(newUid >= 1000 && newUid <= 1000000000))
-            {
-                cout << "UIDè¶Šç•Œï¼Œè¯·é‡æ–°è¾“å…¥ï¼š" << endl;
-                cin >> newUid;
-            }*/
-        while (!cheakUidInAdvance(head, newUid))
-        {
-            cout << "å½“å‰UIDï¼š" << newUid << " å·²å­˜åœ¨ï¼Œè¯·é‡æ–°è¾“å…¥ï¼š" << endl;
+    switch (ch) { //developer:GitHub_CSTHenry(zhengke@bytecho.net)
+        case 1:
+            system("CLS");
+            cout << "Çë×¢Òâ£ºUIDÎªµÇÂ¼Æ¾Ö¤£¬Çë½÷É÷ĞŞ¸Ä£¬ĞŞ¸ÄÍê³ÉºóĞèÊ¹ÓÃĞÂUIDµÇÂ¼¡£" << endl;
+            cout << "ÕıÔÚ¸ü¸Ä " << target->uName() << " µÄUID£¬"
+                 << "ÇëÊäÈëĞÂµÄUID£º" << endl;
             cin >> newUid;
+            /*
+                while (!(newUid >= 1000 && newUid <= 1000000000))
+                {
+                    cout << "UIDÔ½½ç£¬ÇëÖØĞÂÊäÈë£º" << endl;
+                    cin >> newUid;
+                }*/
+            while (!cheakUidInAdvance(head, newUid)) {
+                cout << "µ±Ç°UID£º" << newUid << " ÒÑ´æÔÚ£¬ÇëÖØĞÂÊäÈë£º" << endl;
+                cin >> newUid;
         }
-        strcpy(target->uid, newUid);
-        break;
-    case 2:
-        system("CLS");
-        cout << "æ­£åœ¨æ›´æ”¹ " << target->uName() << " çš„å§“åï¼Œè¯·è¾“å…¥æ–°çš„å§“åï¼š" << endl;
-        cin >> newName;
-        target->nameChange(newName);
-        break;
-    case 3:
-        system("CLS");
-        cout << "æ­£åœ¨æ›´æ”¹ " << target->uName() << " çš„ç”¨æˆ·ç»„ï¼Œ"
-             << "å½“å‰ç”¨æˆ·ç»„ä¸ºï¼š" << target->getGroup() << endl;
-        cout << "è¯·è¾“å…¥æ–°çš„ç”¨æˆ·ç»„ç¼–å·ï¼š1.ç®¡ç†å‘˜ï¼ˆè°¨æ…é€‰æ‹©ï¼‰ 2.å¼€å‘è€… 3.æ™®é€šç”¨æˆ·ï¼š" << endl;
-        cin >> newgroup;
-        while (newgroup < 1 && newgroup > 3)
-        {
-            cout << "è¯¥ç”¨æˆ·ç»„ç¼–å·ä¸å­˜åœ¨ï¼Œè¯·é‡æ–°è¾“å…¥ï¼š" << endl;
+            strcpy(target->uid, newUid);
+            break;
+        case 2:
+            system("CLS");
+            cout << "ÕıÔÚ¸ü¸Ä " << target->uName() << " µÄĞÕÃû£¬ÇëÊäÈëĞÂµÄĞÕÃû£º" << endl;
+            cin >> newName;
+            target->nameChange(newName);
+            break;
+        case 3:
+            system("CLS");
+            cout << "ÕıÔÚ¸ü¸Ä " << target->uName() << " µÄÓÃ»§×é£¬"
+                 << "µ±Ç°ÓÃ»§×éÎª£º" << target->getGroup() << endl;
+            cout << "ÇëÊäÈëĞÂµÄÓÃ»§×é±àºÅ£º1.¹ÜÀíÔ±£¨½÷É÷Ñ¡Ôñ£© 2.¿ª·¢Õß 3.ÆÕÍ¨ÓÃ»§£º" << endl;
             cin >> newgroup;
-        }
-        target->groupChange(newgroup);
-        break;
-    default:
-        system("CLS");
-        cout << "æ­£åœ¨æ›´æ”¹ " << target->uName() << " çš„å¯†ç ï¼Œå¯†ç ä¸ºç™»å½•å‡­è¯ä¹‹ä¸€ï¼Œè¯·è°¨æ…æ“ä½œã€‚" << endl;
-        cout << "è¯·è¾“å…¥æ–°çš„å¯†ç ï¼ˆ<=16ä½ï¼‰ï¼š" << endl;
-        cin >> newPass;
-        target->passChange(newPass);
-        break;
+            while (newgroup < 1 && newgroup > 3) {
+                cout << "¸ÃÓÃ»§×é±àºÅ²»´æÔÚ£¬ÇëÖØĞÂÊäÈë£º" << endl;
+                cin >> newgroup;
+            }
+            target->groupChange(newgroup);
+            break;
+        default:
+            system("CLS");
+            cout << "ÕıÔÚ¸ü¸Ä " << target->uName() << " µÄÃÜÂë£¬ÃÜÂëÎªµÇÂ¼Æ¾Ö¤Ö®Ò»£¬Çë½÷É÷²Ù×÷¡£" << endl;
+            cout << "ÇëÊäÈëĞÂµÄÃÜÂë£¨<=16Î»£©£º" << endl;
+            cin >> newPass;
+            target->passChange(newPass);
+            break;
     }
-    cout << "ç¼–è¾‘ç”¨æˆ·ä¿¡æ¯æˆåŠŸï¼Œè¿”å›ç®¡ç†å‘˜èœå•ã€‚" << endl;
+    cout << "±à¼­ÓÃ»§ĞÅÏ¢³É¹¦£¬·µ»Ø¹ÜÀíÔ±²Ëµ¥¡£" << endl;
     system("pause");
     system("CLS");
 }
-void randUID(int group, char *newUid) //éšæœºUIDï¼Œç®¡ç†å‘˜å‰ç¼€ä¸ºAï¼Œæ™®é€šç”¨æˆ·ä¸ºUï¼Œå¼€å‘è€…ä¸ºD
+
+void randUID(int group, char *newUid) //Ëæ»úUID£¬¹ÜÀíÔ±Ç°×ºÎªA£¬ÆÕÍ¨ÓÃ»§ÎªU£¬¿ª·¢ÕßÎªD
 {
-    const char *strtoC = nullptr;
+    const char *strtoC;
     char ufrontUID[12] = "U";
     char afrontUID[12] = "A";
     char dfrontUID[12] = "D";
-    string behindUID = "\0";
-    long int randNum = 0;
-    srand((int)time(0));
-    randNum = 1000000 + rand() % 100000000;
+    string behindUID;
+    int randNum;
+    int min = 1000000, max = 100000000;
+    //srand((int)time(0));
+    default_random_engine e(time(nullptr));
+    uniform_int_distribution<int> u(min, max);
+    //randNum = 1000000 + rand() % 100000000;
+    randNum = u(e);
     behindUID = to_string(randNum);
     strtoC = behindUID.c_str();
-    if (group == 1)
-    {
+    if (group == 1) {
         strcat(afrontUID, strtoC);
         strcpy(newUid, afrontUID);
-    }
-    else if (group == 3)
-    {
+    } else if (group == 3) {
         strcat(ufrontUID, strtoC);
         strcpy(newUid, ufrontUID);
     }
@@ -778,25 +744,24 @@ void deleteUser(userAccount *head, attendance *ahead, char *uid)
 {
     userAccount *flag = nullptr;
     userAccount *target = head;
-    while (target) //å°†targetæŒ‡å‘éœ€è¦ç¼–è¾‘çš„ç”¨æˆ·å¯¹è±¡
+    while (target) //½«targetÖ¸ÏòĞèÒª±à¼­µÄÓÃ»§¶ÔÏó
     {
         if (target->cheakUid(uid))
             break;
-        flag = target; //è®°å½•ç›®æ ‡ä¹‹å‰çš„æŒ‡é’ˆ
+        flag = target; //¼ÇÂ¼Ä¿±êÖ®Ç°µÄÖ¸Õë
         target = target->next;
     }
     flag->next = target->next;
-    deleteAttendance(ahead, uid); //åŒæ—¶åˆ é™¤è€ƒå‹¤è¡¨ä¸­ç›¸åº”æ•°æ®
-    ahead->savaAttendance(ahead); //ä¿å­˜
-    cout << "è´¦å· [UID:" << uid << "] æ³¨é”€æˆåŠŸã€‚" << endl;
+    deleteAttendance(ahead, uid); //Í¬Ê±É¾³ı¿¼ÇÚ±íÖĞÏàÓ¦Êı¾İ
+    ahead->savaAttendance(ahead); //±£´æ
+    cout << "ÕËºÅ [UID:" << uid << "] ×¢Ïú³É¹¦¡£" << endl;
     system("pause");
     system("CLS");
 } //developer:GitHub_CSTHenry(zhengke@bytecho.net)
-bool cheakUidInAdvance(userAccount *head, char *id) //æ— é‡å¤UIDè¿”å›TRUE
+bool cheakUidInAdvance(userAccount *head, char *id) //ÎŞÖØ¸´UID·µ»ØTRUE
 {
     bool flag = true;
-    do
-    {
+    do {
         if (head->cheakUid(id))
             flag = false;
         head = head->next;

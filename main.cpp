@@ -3,7 +3,6 @@
 //2021-01
 //VSCode(GCC)
 /***********************************************/
-#include "userAccount.h"
 #include "mainFunc.cpp"
 #include <iostream>
 
@@ -17,7 +16,7 @@ menu:
     cin >> choice;
     while(!(choice == 1 || choice == 2))
     {
-        cout << "é€‰é¡¹ä¸å­˜åœ¨ï¼Œè¯·é‡æ–°è¾“å…¥ï¼š" << endl;
+        cout << "Ñ¡Ïî²»´æÔÚ£¬ÇëÖØÐÂÊäÈë£º" << endl;
         cin >> choice;
     }
     switch (choice)
@@ -25,9 +24,7 @@ menu:
     case 1:
         system("CLS");
         mainSignup();
-        //cout << "æ³¨å†Œå®Œæˆï¼Œè¿”å›žä¸»èœå•ã€‚" << endl;
         goto menu;
-        break;
     case 2:
         system("CLS");
         if(!(bool)mainLogin())

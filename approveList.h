@@ -7,33 +7,32 @@
 using namespace std;
 //developer:GitHub_CSTHenry(zhengke@bytecho.net)
 
-class approveList
-{
-    public:
-        approveList* loadList(approveList* aphead);
-        approveList *next = nullptr;
-        int listNum = 0;//å®¡æ‰¹æµç¨‹ç¼–å·
-        bool isContent = false;//æ˜¯å¦å¼€å¯ç”³è¯·å†…å®¹å¡«å†™ï¼Ÿ
-        char *reListTips()
-        {
-            return listTips;
-        }
-        char* reListTitle()
-        {
-            return listTitle;
-        }
-        void setTitle(char *title)
-        {
-            strcpy(listTitle, title);
-        }
-        void setTips(char *tips)
-        {
-            strcpy(listTips, tips);
-        }
+class approveList {
+public:
+    static approveList *loadList(approveList *aphead);
 
-    private:
-        char listTips[100] = "\0";//ç”³è¯·æç¤º
-        char listTitle[21] = "\0";//æµç¨‹å
+    approveList *next = nullptr;
+    int listNum = 0;//ÉóÅúÁ÷³Ì±àºÅ
+    bool isContent = false;//ÊÇ·ñ¿ªÆôÉêÇëÄÚÈİÌîĞ´£¿
+    char *reListTips() {
+        return listTips;
+    }
+
+    char *reListTitle() {
+        return listTitle;
+    }
+
+    void setTitle(char *title) {
+        strcpy(listTitle, title);
+    }
+
+    void setTips(char *tips) {
+        strcpy(listTips, tips);
+    }
+
+private:
+    char listTips[100] = "\0";//ÉêÇëÌáÊ¾
+    char listTitle[21] = "\0";//Á÷³ÌÃû
 };
 
 #endif

@@ -5,108 +5,105 @@
 
 using namespace std;
 //developer:GitHub_CSTHenry(zhengke@bytecho.net)
-class attendance
-{
-    public:
-        void savaAttendance(attendance *ahead);
-        attendance *loadData(attendance *ahead);
-        char Uid[12] = "\0";
-        attendance *next = nullptr;
-        bool cheakUid(char *id)//IDåŒ¹é…è¿”å›true
-        {
-            if(!strcmp(Uid, id))
-                return true;
-            return false;
-        }
-        char *getSimpleTime()
-        {
-            return simpleTime;
-        }
+class attendance {
+public:
+    static void savaAttendance(attendance *ahead);
+
+    static attendance *loadData(attendance *ahead);
+
+    char Uid[12] = "\0";
+    attendance *next = nullptr;
+
+    bool cheakUid(char *id)//IDÆ¥Åä·µ»Øtrue
+    {
+        if (!strcmp(Uid, id))
+            return true;
+        return false;
+    }
+
+    char *getSimpleTime() {
+        return simpleTime;
+    }
         char *getAttendanceTime()
         {
             return attendanceTime;
         }
-        char *getBackTime()
-        {
-            return backTime;
+
+    char *getBackTime() {
+        return backTime;
+    }
+
+    void takeAttendance(char *Time, char *simple, bool todayMethod)//ĞèÒªµ±Ç°Ê±¼äºÍÇ©µ½·½Ê½£¨Ç©µ½½Ó¿Ú£©
+    {
+        strcpy(attendanceTime, Time);
+        strcpy(simpleTime, simple);
+        method = todayMethod;
+    }
+
+    void takeBack(char *Time)//Ç©ÍË½Ó¿Ú
+    {
+        strcpy(backTime, Time);
+    }
+
+    void printInf(char *today)//×ÛºÏ´òÓ¡Ç©µ½¡¢Ç©ÍË×´Ì¬£¬ÓÃÓÚ¸öÈË²Ëµ¥£¬ÇÒ×Ô¶¯Çå³ı¹ıÆÚ¼ÇÂ¼
+    {
+        if (!strcmp(simpleTime, today)) {
+            printAttendance();
+            if (strlen(backTime)) {
+                cout << endl;
+                printBack();
+            } else
+                cout << "[Î´Ç©ÍË]" << endl;
+        } else {
+            deleteYesterday();
+            cout << "UID£º" << Uid << "[Î´Ç©µ½]" << endl;
         }
-        void takeAttendance(char* Time, char* simple, bool todayMethod)//éœ€è¦å½“å‰æ—¶é—´å’Œç­¾åˆ°æ–¹å¼ï¼ˆç­¾åˆ°æ¥å£ï¼‰
-        {
-            strcpy(attendanceTime, Time);
-            strcpy(simpleTime, simple);
-            method = todayMethod;
+    }
+
+    void printAdminInf(char *today)//¼òÂÔ´òÓ¡¿¼ÇÚ×´Ì¬£¬ÓÃÓÚ¹ÜÀí²Ëµ¥£¬ÔÚÊä³öÓÃ»§ĞÅÏ¢ºóµ÷ÓÃ£¬ÇÒ×Ô¶¯Çå³ı¹ıÆÚ¼ÇÂ¼
+    {
+        if (!strcmp(simpleTime, today)) {
+            cout << "[ÒÑÇ©µ½]" << "Ç©µ½Ê±¼ä£º" << attendanceTime << " ";
+        } else {
+            deleteYesterday();//Çå³ı¹ıÆÚÇ©µ½¼ÇÂ¼
+            cout << "[µ±ÌìÎ´Ç©µ½]" << endl;
+            return;
         }
-        void takeBack(char* Time)//ç­¾é€€æ¥å£
-        {
-            strcpy(backTime, Time);
-        }
-        void printInf(char *today)//ç»¼åˆæ‰“å°ç­¾åˆ°ã€ç­¾é€€çŠ¶æ€ï¼Œç”¨äºä¸ªäººèœå•ï¼Œä¸”è‡ªåŠ¨æ¸…é™¤è¿‡æœŸè®°å½•
-        {
-            if(!strcmp(simpleTime, today))
-            {
-                printAttendance();
-                if(strlen(backTime))
-                {
-                    cout << endl;
-                    printBack();
-                }else
-                    cout << "[æœªç­¾é€€]" << endl;
-            }
-            else
-            {
-                deleteYesterday();
-                cout << "UIDï¼š" << Uid << "[æœªç­¾åˆ°]" << endl;
-            }
-        }
-        void printAdminInf(char * today)//ç®€ç•¥æ‰“å°è€ƒå‹¤çŠ¶æ€ï¼Œç”¨äºç®¡ç†èœå•ï¼Œåœ¨è¾“å‡ºç”¨æˆ·ä¿¡æ¯åè°ƒç”¨ï¼Œä¸”è‡ªåŠ¨æ¸…é™¤è¿‡æœŸè®°å½•
-        {
-            if(!strcmp(simpleTime, today))
-            {
-                cout << "[å·²ç­¾åˆ°]" << "ç­¾åˆ°æ—¶é—´ï¼š" << attendanceTime << " ";
-            }
-            else{
-                deleteYesterday();//æ¸…é™¤è¿‡æœŸç­¾åˆ°è®°å½•
-                cout << "[å½“å¤©æœªç­¾åˆ°]" << endl;
-                return;
-            }
             if(method)
             {
                 if (strlen(backTime))
-                    cout << "ç­¾é€€æ—¶é—´ï¼š" << backTime;
+                    cout << "Ç©ÍËÊ±¼ä£º" << backTime;
                 else
-                    cout << "[æœªç­¾é€€]" ;
+                    cout << "[Î´Ç©ÍË]";
             }
-            cout << " ç­¾åˆ°æ–¹å¼ï¼š" << getMethod()<<endl;
+        cout << " Ç©µ½·½Ê½£º" << getMethod() << endl;
         }
-        void printAttendance()
-        {
-            cout << "UIDï¼š" << Uid << endl <<"[å·²ç­¾åˆ°]"
-                 << " ç­¾åˆ°æ–¹å¼ï¼š" << getMethod() << endl;
-            cout << "ç­¾åˆ°æ—¶é—´ï¼š" << attendanceTime << endl;
+        void printAttendance() {
+            cout << "UID£º" << Uid << endl << "[ÒÑÇ©µ½]"
+                 << " Ç©µ½·½Ê½£º" << getMethod() << endl;
+            cout << "Ç©µ½Ê±¼ä£º" << attendanceTime << endl;
         }
-        void printBack()
-        {
-            cout << "[å·²ç­¾é€€]" << endl;
-            cout << "ç­¾é€€æ—¶é—´ï¼š" << backTime << endl;
-        }
-        string getMethod()
-        {
-            if(!method)
-                return "ç®¡ç†å‘˜è¡¥ç­¾";
-            return "è‡ªè¡Œç­¾åˆ°";
-        }
-        void deleteYesterday()//ç”¨æˆ·simpleTimeä¸ç›¸åŒæ—¶è°ƒç”¨
-        {
-            method = false;
-            for (int i = 0; attendanceTime[i]; i++)
-                attendanceTime[i]='\0';
-            for (int i = 0; backTime[i]; i++)
-                backTime[i] = '\0';
-        }
-    private://developer:GitHub_CSTHenry(zhengke@bytecho.net)
-        bool method = false;//falseä¸ºè¡¥ç­¾ï¼Œtrueä¸ºè‡ªè¡Œç­¾åˆ°
-        char attendanceTime[50] = "\0";
-        char backTime[50] = "\0";
-        char simpleTime[25] = "\0";//ä»…æ˜¾ç¤ºæ—¥æœŸï¼Œä¸æ˜¾ç¤ºå…·ä½“æ—¶é—´ï¼Œç”¨äºåˆ¤æ–­å½“å¤©æ˜¯å¦ç­¾åˆ°
+
+    void printBack() {
+        cout << "[ÒÑÇ©ÍË]" << endl;
+        cout << "Ç©ÍËÊ±¼ä£º" << backTime << endl;
+    }
+
+    [[nodiscard]] string getMethod() const;
+
+    void deleteYesterday()//ÓÃ»§simpleTime²»ÏàÍ¬Ê±µ÷ÓÃ
+    {
+        method = false;
+        for (int i = 0; attendanceTime[i]; i++)
+            attendanceTime[i] = '\0';
+        for (int i = 0; backTime[i]; i++)
+            backTime[i] = '\0';
+    }
+
+private://developer:GitHub_CSTHenry(zhengke@bytecho.net)
+    bool method = false;//falseÎª²¹Ç©£¬trueÎª×ÔĞĞÇ©µ½
+    char attendanceTime[50] = "\0";
+    char backTime[50] = "\0";
+    char simpleTime[25] = "\0";//½öÏÔÊ¾ÈÕÆÚ£¬²»ÏÔÊ¾¾ßÌåÊ±¼ä£¬ÓÃÓÚÅĞ¶Ïµ±ÌìÊÇ·ñÇ©µ½
 };
 #endif
