@@ -7,7 +7,7 @@ userAccount *searchUid(userAccount* head, char *id);
 bool rememberUid(char *uid, char rememberCh);
 
 void printMenu() {
-    cout << "        办公自动化 V1.0       " << endl;
+    cout << "        办公自动化 V1.2       " << endl;
     cout << "===============================" << endl;
     cout << "=         01.账户注册         =" << endl;
     cout << "=         02.账户登录         =" << endl;
