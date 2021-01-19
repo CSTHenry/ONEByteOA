@@ -1,16 +1,20 @@
 #include "userAccount.h"
 #include "userDataFunc.cpp"
 #include <iostream>
+
 using namespace std;
+
 //developer:GitHub_CSTHenry(zhengke@bytecho.net)
-userAccount *searchUid(userAccount* head, char *id);
+userAccount *searchUid(userAccount *head, char *id);
+
 bool rememberUid(char *uid, char rememberCh);
 
 void printMenu() {
-    cout << "        °ì¹«×Ô¶¯»¯ V1.2       " << endl;
+    cout << "        °ì¹«×Ô¶¯»¯ V1.3       " << endl;
     cout << "===============================" << endl;
     cout << "=         01.ÕË»§×¢²á         =" << endl;
-    cout << "=         02.ÕË»§µÇÂ¼         =" << endl;
+    cout << "=        02.¹ÜÀíÔ±ÉêÇë        =" << endl;
+    cout << "=         03.ÕË»§µÇÂ¼         =" << endl;
     cout << "===============================" << endl;
     cout << "ÇëÊäÈëÑ¡Ïî±àºÅ½øĞĞÑ¡Ôñ£º" << endl;
 }
@@ -150,10 +154,10 @@ userAccount *userAccount::loadUserData(userAccount *head) //½«·µ»ØÁ´±íÎ²Ö¸Õë£¬¼´
                           ios::binary | ios::in); // F:\\VSCode_Projects\\VSCode-C++\\github_oa\\src\\userData.dat
     if (!loadUserFile.fail()) {
         do {
-            loadUserFile.read((char *)temp->uid, sizeof(temp->uid));
-            loadUserFile.read((char *)temp->name, sizeof(head->name));
-            loadUserFile.read((char *)temp->password, sizeof(head->password));
-            loadUserFile.read((char *)&temp->group, sizeof(int));
+            loadUserFile.read((char *) temp->uid, sizeof(temp->uid));
+            loadUserFile.read((char *) temp->name, sizeof(head->name));
+            loadUserFile.read((char *) temp->password, sizeof(head->password));
+            loadUserFile.read((char *) &temp->group, sizeof(int));
             if (!temp->group) //½â¾öloadUserFile.eof()»á¶à²Ù×÷Ò»´ÎµÄÎÊÌâ
             {
                 flag = 1;
@@ -179,7 +183,25 @@ userAccount *userAccount::loadUserData(userAccount *head) //½«·µ»ØÁ´±íÎ²Ö¸Õë£¬¼´
 
 void mainSignup() //Ö÷Ò³Ãæ×¢²áº¯Êı£¬¿ÉÒÔÅĞ¶ÏuserData
 {
-    //userAccount *newHead = new userAccount();
+    auto *ahead = new attendance();
+    auto *head = new userAccount();
+    userAccount *last = nullptr;
+    attendance *alast = nullptr;
+    alast = ahead->loadData(ahead);
+    if (!(last = head->loadUserData(head))) //ÔØÈëµ±Ç°Êı¾İ¿â
+    {
+        cout << "Çë´´½¨¹ÜÀíÔ±ÕË»§£¨ÓÃ»§×é±àºÅ£º1£©£º" << endl;
+        createUser();
+    } else
+        addUser(head, ahead, last, alast);
+    system("CLS");
+    cout << "×¢²áÍê³É£¡·µ»ØÖ÷²Ëµ¥¡£" << endl;
+    cout << endl;
+    delete head;
+}
+
+void adminSignup() //Ö÷Ò³Ãæ×¢²áº¯Êı£¬¿ÉÒÔÅĞ¶ÏuserData
+{
     auto *ahead = new attendance();
     auto *head = new userAccount();
     userAccount *last = nullptr;
@@ -218,7 +240,7 @@ bool mainLogin() //µÇÂ¼º¯Êı£¬µÇÂ¼Ê§°Ü·µ»Øfalse£¬µÇÂ¼³É¹¦·µ»Øtrue
             cout << "= ÇëÊäÈëUID£º                 =" << endl;
             cout << "===============================" << endl;
             cin >> loginID;
-        }else {
+        } else {
             cout << " É¾³ıuidInf.iniÒÔµÇÂ¼ÆäËûÕË»§" << endl;
             cout << "=========ÒÑ»ñÈ¡ÄãµÄUID=========" << endl;
             cout << "-> " << loginID << endl;
@@ -229,7 +251,7 @@ bool mainLogin() //µÇÂ¼º¯Êı£¬µÇÂ¼Ê§°Ü·µ»Øfalse£¬µÇÂ¼³É¹¦·µ»Øtrue
         cout << "= ÇëÊäÈëÃÜÂë£¨<=16Î»£©£º      =" << endl;
         cout << "===============================" << endl;
         cin >> pass;
-        if(!rememberUid(loginID, 'n')) {
+        if (!rememberUid(loginID, 'n')) {
             cout << "ÌáÊ¾£ºÊÇ(y)·ñ(n)±£´æµ±Ç°UID [" << loginID << "] ÒÔ±ãÏÂ´ÎµÇÂ¼£¿" << endl;
             cout << "ÊäÈë \"y\" »òÕß \"n\" " << endl;
             cin >> rememberCh;
@@ -241,23 +263,19 @@ bool mainLogin() //µÇÂ¼º¯Êı£¬µÇÂ¼Ê§°Ü·µ»Øfalse£¬µÇÂ¼³É¹¦·µ»Øtrue
                 system("pause");
             }
         }
-        while (target)
-        {
-            if (target->cheakUid(loginID) && target->logIn(pass))
-            {
+        while (target) {
+            if (target->cheakUid(loginID) && target->logIn(pass)) {
                 flag = 1;
                 break;
             }
             target = target->next;
         }
-        if(!flag)
-        {
+        if (!flag) {
             system("CLS");
             cout << "UID²»´æÔÚ»òÃÜÂë²»Æ¥Åä£¬·µ»ØÖ÷²Ëµ¥" << endl;
             cout << endl;
             return false;
-        }
-        else {
+        } else {
             if (!aTarget->loadData(aTarget))//³õÊ¼»¯¿¼ÇÚÏµÍ³,aheadÎª¿¼ÇÚ±íÍ·Ö¸Õë
             {
                 ahead = aTarget = userToData(head);
@@ -295,29 +313,27 @@ userAccount *searchUid(userAccount *head, char *id) //ËÑË÷uid£¬²¢·µ»ØÖ¸ÕëÖ¸ÏòÏàÓ
     }
     return point;
 }
-void userAccount::print_userInfSimple()
-{
+
+void userAccount::print_userInfSimple() {
     if (search_Situation() != "¹ÜÀíÔ±")
         cout << "UID: " << uid << "\t" << name << "\t" << search_Situation() << endl;
 }
-bool rememberUid(char *uid,char rememberCh)
-{
+
+bool rememberUid(char *uid, char rememberCh) {
     int i;
     char loadUID[32] = "\0";
     ifstream loadUidInf("uidInf.ini", ios::in);
-    if(loadUidInf.fail())
-    {
-        if(rememberCh != 'y')
+    if (loadUidInf.fail()) {
+        if (rememberCh != 'y')
             return false;
-        else{
+        else {
             ofstream savaUidInf("uidInf.ini", ios::out | ios::trunc);
             savaUidInf << "UID = " << uid;
             savaUidInf.close();
         }
-    }
-    else{
-        loadUidInf.getline(loadUID,sizeof(loadUID));
-        for (i = 6; loadUID[i];i++) {
+    } else {
+        loadUidInf.getline(loadUID, sizeof(loadUID));
+        for (i = 6; loadUID[i]; i++) {
             loadUID[i - 6] = loadUID[i];
             loadUID[i] = '\0';
         }

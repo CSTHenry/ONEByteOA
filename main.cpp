@@ -14,8 +14,7 @@ menu:
     int choice = 0;
     printMenu();
     cin >> choice;
-    while(!(choice == 1 || choice == 2))
-    {
+    while (!(choice == 1 || choice == 2 || choice == 3)) {
         cout << "选项不存在，请重新输入：" << endl;
         cin >> choice;
     }
@@ -25,8 +24,8 @@ menu:
         system("CLS");
         mainSignup();
         goto menu;
-    case 2:
-        system("CLS");
+        case 3:
+            system("CLS");
         if(!(bool)mainLogin())
             goto menu;
         break;

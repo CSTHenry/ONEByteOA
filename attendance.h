@@ -69,20 +69,41 @@ public:
             cout << "[当天未签到]" << endl;
             return;
         }
-            if(method)
-            {
-                if (strlen(backTime))
-                    cout << "签退时间：" << backTime;
-                else
-                    cout << "[未签退]";
-            }
+        if (method) {
+            if (strlen(backTime))
+                cout << "签退时间：" << backTime;
+            else
+                cout << "[未签退]";
+        }
         cout << " 签到方式：" << getMethod() << endl;
+    }
+
+    void expAdminInf(char *today, userAccount *head, int flag)//简略打印考勤状态，用于管理菜单，在输出用户信息后调用，且自动清除过期记录
+    {
+        ofstream expFile("expAttendance.csv", ios::out | ios::app);
+        if (flag == 1)
+            expFile << "考勤表导出日期," << today << "\n";
+        expFile << "[UID：" << head->uid << "]," << head->uName() << "," << head->search_Situation() << ",";
+        if (!strcmp(simpleTime, today)) {
+            expFile << "签到状态," << "[已签到]," << "签到时间," << attendanceTime << ",";
+        } else {
+            expFile << "签到状态," << "[当天未签到]" << "\n";
+            return;
         }
-        void printAttendance() {
-            cout << "UID：" << Uid << endl << "[已签到]"
-                 << " 签到方式：" << getMethod() << endl;
-            cout << "签到时间：" << attendanceTime << endl;
+        if (method) {
+            if (strlen(backTime))
+                expFile << "签退时间," << backTime;
+            else
+                expFile << "[未签退],";
         }
+        expFile << " 签到方式," << getMethod() << "\n";
+    }
+
+    void printAttendance() {
+        cout << "UID：" << Uid << endl << "[已签到]"
+             << " 签到方式：" << getMethod() << endl;
+        cout << "签到时间：" << attendanceTime << endl;
+    }
 
     void printBack() {
         cout << "[已签退]" << endl;

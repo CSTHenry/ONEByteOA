@@ -468,7 +468,7 @@ bool adminMenuChoice5(userAccount *head, attendance *ahead, attendance *apoint) 
     cout << endl;
     printAttendance(head, ahead); //输出用户当日考勤信息，并清空过期信息
     cout << endl;
-    cout << "输入1 补签用户，输入2 管理员签到，输入3 管理员签退，输入4 返回管理员菜单：" << endl;
+    cout << "输入1 补签用户，输入2 管理员签到，输入3 管理员签退，输入4 导出当天考勤表.csv，输入5 返回管理员菜单：" << endl;
     cin >> ch;
     switch (ch) {
         case 1:
@@ -530,6 +530,19 @@ bool adminMenuChoice5(userAccount *head, attendance *ahead, attendance *apoint) 
                 system("CLS");
                 return false;
             }
+        case 4: {
+            int flag = 1;
+            while (ahead && head) {
+                ahead->expAdminInf(simpleTime(), head, flag);
+                head = head->next;
+                ahead = ahead->next;
+                flag++;
+            }
+            cout << "已导出至expAttendance.csv文件。" << endl;
+            system("pause");
+            system("CLS");
+            return false;
+        }
         default:
             system("CLS");
             return false;
