@@ -81,22 +81,26 @@ public:
     void expAdminInf(char *today, userAccount *head, int flag)//简略打印考勤状态，用于管理菜单，在输出用户信息后调用，且自动清除过期记录
     {
         ofstream expFile("expAttendance.csv", ios::out | ios::app);
-        if (flag == 1)
-            expFile << "考勤表导出日期," << today << "\n";
-        expFile << "[UID：" << head->uid << "]," << head->uName() << "," << head->search_Situation() << ",";
+        if (flag == 1) {
+            expFile << "考勤表导出日期：," << today << "\n";
+            expFile << "UID,姓名,职位,签到状态,签到时间,签退状态,签退时间,签到方式" << endl;
+        }
+        expFile << "[" << head->uid << "]," << head->uName() << "," << head->search_Situation() << ",";
         if (!strcmp(simpleTime, today)) {
-            expFile << "签到状态," << "[已签到]," << "签到时间," << attendanceTime << ",";
+            expFile << "[已签到]," << attendanceTime << ",";
         } else {
-            expFile << "签到状态," << "[当天未签到]" << "\n";
+            expFile << "[当天未签到],NULL,NULL,NULL,NULL" << "\n";
             return;
         }
         if (method) {
             if (strlen(backTime))
-                expFile << "签退时间," << backTime;
+                expFile << "[已签退]," << backTime << ",";
             else
-                expFile << "[未签退],";
+                expFile << "[未签退],NULL,";
+        } else {
+            expFile << "NULL,NULL,";
         }
-        expFile << " 签到方式," << getMethod() << "\n";
+        expFile << getMethod() << "\n";
     }
 
     void printAttendance() {
