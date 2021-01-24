@@ -300,8 +300,6 @@ void adminApprove(approve *target)
     target->setReply(re);
     target->statu = true;
     if(target->listNum == 1024)
-        return 1;
-    return 0;
 }
 bool getUserApprove(userAccount *point, approve *uahead)
 {
