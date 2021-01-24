@@ -299,7 +299,7 @@ void adminApprove(approve *target)
     cin >> re;
     target->setReply(re);
     target->statu = true;
-    if(target->listNum == 1024)
+    //if(target->listNum == 1024)
 }
 bool getUserApprove(userAccount *point, approve *uahead)
 {
