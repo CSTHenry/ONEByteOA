@@ -38,20 +38,20 @@ public:
         {
             return title;
         }
-        void setContent(char *con)
+        void setContent(const char *con)
         {
             strcpy(content, con);
         }
-        void setTitle(char* tit)
+        void setTitle(const char* tit)
         {
             strcpy(title, tit);
         }
-        void setApply(char *app)
+        void setApply(const char *app)
         {
             strcpy(apply, app);
         }
 
-    void setReply(char *re) {
+    void setReply(const char *re) {
         strcpy(reply, re);
     }
 

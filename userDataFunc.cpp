@@ -8,30 +8,18 @@ using namespace std;
 
 //developer:GitHub_CSTHenry(zhengke@bytecho.net)
 void randUID(int group, char *newUid);
-
 void userDataChange(userAccount *head, userAccount *point);
-
 bool userMenuChoice1(userAccount *head, userAccount *point);
-
 bool userMenuChoice2(attendance *apoint);
-
 bool userMenuChoice3(userAccount *point);
-
 bool userMenuChoice4(userAccount *point);
-
 bool cheakUidInAdvance(userAccount *head, char *id); //无重复UID返回TRUE
 void deleteUser(userAccount *head, attendance *ahead, char *uid);
-
 bool adminMenuChoice2(userAccount *head, attendance *ahead);
-
 bool adminMenuChoice3();
-
 bool adminMenuChoice4();
-
 bool adminMenuChoice5(userAccount *head, attendance *ahead, attendance *apoint);
-
 void adminUserDataChange(userAccount *head, userAccount *target);
-
 bool adminMenuChoice(userAccount *head, attendance *ahead, userAccount *point); //返回true表示对链表进行了修改，false代表直接返回
 bool userMenuChoice(userAccount *head, attendance *ahead, userAccount *point)   //返回true表示对链表进行了修改，false代表直接返回
 {

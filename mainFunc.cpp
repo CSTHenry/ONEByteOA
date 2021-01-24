@@ -10,7 +10,7 @@ userAccount *searchUid(userAccount *head, char *id);
 bool rememberUid(char *uid, char rememberCh);
 
 void printMenu() {
-    cout << "        °ì¹«×Ô¶¯»¯ V1.3       " << endl;
+    cout << "        °ì¹«×Ô¶¯»¯ V1.4       " << endl;
     cout << "===============================" << endl;
     cout << "=         01.ÕË»§×¢²á         =" << endl;
     cout << "=        02.¹ÜÀíÔ±ÉêÇë        =" << endl;
@@ -67,8 +67,7 @@ userAccount *search_userInf(userAccount *p, char *id)//·µ»Ø¶ÔÓ¦UIDµÄÖ¸Õë
     return head;
 }
 
-void
-addUser(userAccount *head, attendance *ahead, userAccount *last, attendance *alast) //ĞèÒª´«ÈëÊı¾İ¿âÊ×Î²Á´±íµÄµØÖ·,µ÷ÓÃloadUserData()ºóÊ¹ÓÃ
+void addUser(userAccount *head, attendance *ahead, userAccount *last, attendance *alast) //ĞèÒª´«ÈëÊı¾İ¿âÊ×Î²Á´±íµÄµØÖ·,µ÷ÓÃloadUserData()ºóÊ¹ÓÃ
 {
     int newGroup;
     char pass[17] = "\0", newName[10] = "\0", newUID[12] = "\0";
@@ -85,6 +84,7 @@ addUser(userAccount *head, attendance *ahead, userAccount *last, attendance *ala
     randUID(newGroup, newUID);
     while (!cheakUidInAdvance(head, newUID))
         randUID(newGroup, newUID);
+    cout << endl;
     cout << "[ UID´´½¨Íê³É£¨Í×ÉÆ±£¹Ü£©£º" << newUID << " ]" << endl;
     cout << endl;
     cout << "===========================" << endl;
@@ -99,7 +99,7 @@ addUser(userAccount *head, attendance *ahead, userAccount *last, attendance *ala
     last->next = newP;
     userAccount::saveUserData(head); //±£´æÕû¸öÁ´±í
     addAttendance(newUID, alast);//¸üĞÂ¿¼ÇÚ±í
-    ahead->savaAttendance(ahead);
+    attendance::savaAttendance(ahead);
 }
 
 userAccount *createUser() //´´½¨userDataÊı¾İ±í£¬ÓÃÓÚ³õÊ¼»¯³ÌĞò£¬²¢·µ»ØÁ´±íÍ·Ö¸Õë
@@ -138,7 +138,7 @@ void userAccount::saveUserData(userAccount *head) //±£´æÄÚ´æÖĞµÄÕû¸öÁ´±í,²¢¸²¸ÇÎ
             head = head->next;
         } while (head);
     } else {
-        cout << "fault,code:fun_184." << endl;
+        cout << "fault,code:fun_142." << endl;
         return;
     }
     openUserFile.close();
@@ -200,23 +200,38 @@ void mainSignup() //Ö÷Ò³Ãæ×¢²áº¯Êı£¬¿ÉÒÔÅĞ¶ÏuserData
     delete head;
 }
 
-void adminSignup() //Ö÷Ò³Ãæ×¢²áº¯Êı£¬¿ÉÒÔÅĞ¶ÏuserData
+void newadminApprove() //Ö÷Ò³Ãæ¹ÜÀíÔ±ÉêÇëº¯Êı
 {
-    auto *ahead = new attendance();
     auto *head = new userAccount();
-    userAccount *last = nullptr;
-    attendance *alast = nullptr;
-    alast = ahead->loadData(ahead);
-    if (!(last = head->loadUserData(head))) //ÔØÈëµ±Ç°Êı¾İ¿â
-    {
-        cout << "Çë´´½¨¹ÜÀíÔ±ÕË»§£¨ÓÃ»§×é±àºÅ£º1£©£º" << endl;
-        createUser();
-    } else
-        addUser(head, ahead, last, alast);
-    system("CLS");
-    cout << "×¢²áÍê³É£¡·µ»ØÖ÷²Ëµ¥¡£" << endl;
+    char apply[200] = "\0", newName[10] = "\0", newUID[12] = "\0", content[200] = "\0";
+    randUID(1, newUID);
+    while (!cheakUidInAdvance(head, newUID))
+        randUID(1, newUID);
+    cout << "     Çë°´ÕÕÌáÊ¾ÉêÇëÕË»§" << endl;//ÒÑ¸ü¸ÄÎªËæ»úÉú³ÉUID
+    cout << "========×Ô¶¯Éú³ÉUID========" << endl;
+    cout << "-> " << newUID << endl;
+    cout << "===========================" << endl;
+    cout << " -[UID´´½¨Íê³É£¨Í×ÉÆ±£¹Ü]-" << endl;
     cout << endl;
-    delete head;
+    cout << "===========================" << endl;
+    cout << "= ÇëÊäÈëĞÕÃû£º            =" << endl;
+    cout << "===========================" << endl;
+    cin >> newName;
+    cout << "===========================" << endl;
+    cout << "= ÇëÊäÈëÉêÇë¹ÜÀíÔ±ÀíÓÉ£º  =" << endl;
+    cout << "===========================" << endl;
+    cin >> apply;
+    cout << "===========================" << endl;
+    cout << "= ÇëÊäÈëÁªÏµÓÊÏä£º        =" << endl;
+    cout << "===========================" << endl;
+    cin >> content;
+    cout<< "ÉêÇëÌá½»Íê³É£¬ÉóºË½á¹û¼°ÕËºÅĞÅÏ¢»á·¢ËÍÖÁÄãµÄÓÊÏä [" << content << "]" << endl;
+    auto *uahead = new approve();
+    approve::loadList(uahead);
+    addSimpleApp(uahead, newUID, newName, apply, content);
+    saveApprove(uahead);
+    system("pause");
+    system("CLS");
 }
 
 bool mainLogin() //µÇÂ¼º¯Êı£¬µÇÂ¼Ê§°Ü·µ»Øfalse£¬µÇÂ¼³É¹¦·µ»Øtrue

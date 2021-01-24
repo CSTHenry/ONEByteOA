@@ -14,6 +14,7 @@ void saveList(approveList *aphead);
 bool deleteList(approveList *aphead, int listNumber);
 bool getList(approve *uahead);
 void adminApprove(approve *target);
+void approveAdmin();
 bool getUserApprove(userAccount *point, approve *uahead);
 void addList(approveList *aphead, char *title, char *tips, bool content)
 {
@@ -165,6 +166,32 @@ void addApprove(approve *uahead, approveList *aphead, char *uid, char *uName, ch
     }
     saveApprove(head);
 }
+void addSimpleApp(approve *uahead, char *uid, char *uName, char *apply, char *content)
+{
+    approve *head = uahead;
+    if (uahead->listNum == 0)
+    {
+        uahead->listNum = 1024;//管理员申请表编号默认为1024
+        strcpy(uahead->Uid, uid);
+        strcpy(uahead->name, uName);
+        uahead->setTitle("主页管理员申请");
+        uahead->setContent(content);
+        uahead->setApply(apply);
+    }
+    else {
+        while (uahead->next)
+            uahead = uahead->next; //转换为链表尾地址
+        auto *nextPtr = new approve();
+        nextPtr->listNum = 1024;
+        strcpy(nextPtr->Uid, uid);
+        strcpy(nextPtr->name, uName);
+        nextPtr->setTitle("主页管理员申请");
+        nextPtr->setContent(content);
+        nextPtr->setApply(apply);
+        uahead->next = nextPtr;
+    }
+    saveApprove(head);
+}
 void saveApprove(approve *uahead) //./src/userApprove.dat
 {
     ofstream saveList("./src/userApprove.dat", ios::binary | ios::out); //F:\\VSCode_Projects\\VSCode-C++\\oa\\src\\userApprove.dat
@@ -272,6 +299,9 @@ void adminApprove(approve *target)
     cin >> re;
     target->setReply(re);
     target->statu = true;
+    if(target->listNum == 1024)
+        return 1;
+    return 0;
 }
 bool getUserApprove(userAccount *point, approve *uahead)
 {
@@ -394,4 +424,8 @@ re:
         cout << "输入的申请编号不存在或不满足编辑要求，请重新输入：" << endl;
         goto re;
     }
+}
+void approveAdmin()
+{
+
 }
