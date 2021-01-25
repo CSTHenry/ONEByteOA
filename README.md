@@ -1,6 +1,6 @@
 ### ONEByteOA程序信息
 
-![1](https://img.shields.io/github/license/CSTHenry/ONEByteOA) ![2](https://img.shields.io/github/v/release/CSTHenry/ONEByteOA?include_prereleases) ![3](https://img.shields.io/github/issues-pr/CSTHenry/ONEByteOA)
+![1](https://img.shields.io/github/license/CSTHenry/ONEByteOA) ![2](https://img.shields.io/github/v/release/CSTHenry/ONEByteOA?include_prereleases) ![3](https://img.shields.io/github/downloads/CSTHenry/ONEByteOA/total)
 
 > OA系统即Office Automation，简称OA，在高校、企业中应用广泛，通过开发OA系统，能够更深入地理解相关内容，更能考察数据结构能力及代码开发规范。
 
