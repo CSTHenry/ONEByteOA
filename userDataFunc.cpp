@@ -15,9 +15,9 @@ bool userMenuChoice3(userAccount *point);
 bool userMenuChoice4(userAccount *point);
 bool cheakUidInAdvance(userAccount *head, char *id); //ÎÞÖØ¸´UID·µ»ØTRUE
 void deleteUser(userAccount *head, attendance *ahead, char *uid);
-bool adminMenuChoice2(userAccount *head, attendance *ahead);
+bool adminMenuChoice2(userAccount *head, attendance *ahead, userAccount *point);
 bool adminMenuChoice3();
-bool adminMenuChoice4();
+bool adminMenuChoice4(userAccount* head, attendance* ahead);
 bool adminMenuChoice5(userAccount *head, attendance *ahead, attendance *apoint);
 void adminUserDataChange(userAccount *head, userAccount *target);
 bool adminMenuChoice(userAccount *head, attendance *ahead, userAccount *point); //·µ»Øtrue±íÊ¾¶ÔÁ´±í½øÐÐÁËÐÞ¸Ä£¬false´ú±íÖ±½Ó·µ»Ø
@@ -73,7 +73,7 @@ bool adminMenuChoice(userAccount *head, attendance *ahead, userAccount *point) {
             else
                 return false;
         case 2:
-            if (adminMenuChoice2(head, ahead))
+            if (adminMenuChoice2(head, ahead, point))
                 return true;
             else
                 return false;
@@ -83,7 +83,7 @@ bool adminMenuChoice(userAccount *head, attendance *ahead, userAccount *point) {
             else
                 return false;
         case 4:
-            if (adminMenuChoice4())
+            if (adminMenuChoice4(head, ahead))
                 return true;
             else
                 return false;
@@ -257,18 +257,20 @@ bool userMenuChoice4(userAccount *point) {
     return true;
 }
 
-bool adminMenuChoice2(userAccount *head, attendance *ahead) {
+bool adminMenuChoice2(userAccount *head, attendance *ahead, userAccount *point) {
     cin.clear();
     cin.sync();
-    int ch = 0;
+    int ch = 0 ,flag = 0;
     char uid[12] = "\0";
     userAccount *target;
     target = head;
     system("CLS");
     cout << "ÓÃ»§ÁÐ±í£¨UID ÐÕÃû Ö°Î»£©£º" << endl;
     while (target) {
-        target->print_userInfSimple();
+        if(flag)
+            target->print_userInfSimple();
         target = target->next;
+        flag++;
     }
     cout << endl;
     cout << "ÊäÈë1 ±à¼­ÓÃ»§ÐÅÏ¢£¬ÊäÈë2 ×¢ÏúÓÃ»§ÕËºÅ£¬ÊäÈë3 ·µ»Ø¹ÜÀíÔ±²Ëµ¥£º" << endl;
@@ -299,6 +301,11 @@ bool adminMenuChoice2(userAccount *head, attendance *ahead) {
         cout << "ÇëÊäÈëÐèÒª×¢ÏúµÄÓÃ»§UID£¨½÷É÷²Ù×÷£©£º" << endl;
         recin2:
         cin >> uid;
+        while(!strcmp(uid,point->uid))
+        {
+            cout<<"½ûÖ¹×¢ÏúÖ÷¹ÜÀíÔ±ÕË»§£¬ÇëÖØÐÂÊäÈë£º"<<endl;
+            cin>>uid;
+        }
         target = head;
         while (target) //½«targetÖ¸ÏòÐèÒª±à¼­µÄÓÃ»§¶ÔÏó
         {
@@ -401,12 +408,12 @@ bool adminMenuChoice3() //Õâ¸öº¯ÊýÊôÊµÐ´µÃÀ¬»ø¡£¡£¡£µ«ÎÞËùÎ½
     return true;
 }
 
-bool adminMenuChoice4() {
+bool adminMenuChoice4(userAccount* head, attendance* ahead) {
     int num = 0;
     char targetUid[10] = "\0", ch = 'n';
     auto *uahead = new approve();
-    approve *head = uahead;
-    uahead->loadList(uahead);
+    approve *Head = uahead;
+    approve::loadList(uahead);
     if (!getList(uahead)) {
         system("pause");
         system("CLS");
@@ -421,7 +428,7 @@ bool adminMenuChoice4() {
         }
         cout << "ÊäÈëÓÃ»§UID¼°Æä¶ÔÓ¦ÉêÇë±àºÅ½øÐÐÉóºË" << endl;
         re:
-        uahead = head;
+        uahead = Head;
         cout << "ÇëÊäÈëÓÃ»§UID£º" << endl;
         cin >> targetUid;
         cout << "ÇëÊäÈëÉêÇë±àºÅ£º" << endl;
@@ -435,10 +442,17 @@ bool adminMenuChoice4() {
             cout << "Î´¼ìË÷µ½ÏàÓ¦ÉêÇëÐÅÏ¢£¬ÇëÖØÐÂÊäÈë£º" << endl;
             goto re;
         }
-        adminApprove(uahead);
+        if(adminApprove(uahead, head))
+        {
+            attendance *temp=ahead;
+            while(ahead->next)
+                ahead=ahead->next;
+            addAttendance(uahead->Uid, ahead);
+            attendance::savaAttendance(temp);
+        }
         cout << endl;
         cout << "ÉóºËÍê³É£¬·µ»Ø¹ÜÀíÔ±²Ëµ¥" << endl;
-        saveApprove(head);
+        saveApprove(Head);
         system("pause");
         system("CLS");
     }
@@ -663,11 +677,9 @@ void randUID(int group, char *newUid) //Ëæ»úUID£¬¹ÜÀíÔ±Ç°×ºÎªA£¬ÆÕÍ¨ÓÃ»§ÎªU£¬¿ª·
     char dfrontUID[12] = "D";
     string behindUID;
     int randNum;
-    int min = 1000000, max = 100000000;
-    //srand((int)time(0));
+    int min = 1000000, max = 10000000;
     default_random_engine e(time(nullptr));
     uniform_int_distribution<int> u(min, max);
-    //randNum = 1000000 + rand() % 100000000;
     randNum = u(e);
     behindUID = to_string(randNum);
     strtoC = behindUID.c_str();

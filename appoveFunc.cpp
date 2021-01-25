@@ -1,6 +1,7 @@
 #include "approve.h"
 #include "approveList.h"
 #include <fstream>
+#include <iomanip>
 #include <iostream>
 
 using namespace std;
@@ -13,8 +14,7 @@ void saveApprove(approve *uahead);
 void saveList(approveList *aphead);
 bool deleteList(approveList *aphead, int listNumber);
 bool getList(approve *uahead);
-void adminApprove(approve *target);
-void approveAdmin();
+bool adminApprove(approve *target ,userAccount *head);
 bool getUserApprove(userAccount *point, approve *uahead);
 void addList(approveList *aphead, char *title, char *tips, bool content)
 {
@@ -263,9 +263,9 @@ bool getList(approve *uahead)
             uahead = uahead->next;
             continue;
         }
-        cout << "[" << uahead->Uid << "] " << uahead->name << "->"
-             << "[" << uahead->listNum << "]" << uahead->reTitle() << "\t"
-             << "未审核" << endl;
+        cout << "[" << left << setw(9) << uahead->Uid << "] " << setw(6) << setfill(' ') << uahead->name << "->"
+             << "[" << right << setfill('0') << setw(4) << uahead->listNum << "]" << left << setw(20)<< setfill(' ') <<uahead->reTitle()
+             << "「未审核」" << endl;
         flag = true;
         uahead = uahead->next;
     }
@@ -276,8 +276,14 @@ bool getList(approve *uahead)
     }
     return true;
 }
-void adminApprove(approve *target)
+bool adminApprove(approve *target, userAccount* head)
 {
+    userAccount *temp=head, *last;
+    while(head->next)//获取尾地址
+    {
+        head = head->next;
+        last = head;
+    }
     char ch = 'n', re[101] = "\0";
     cout << endl;
     system("CLS");
@@ -299,7 +305,23 @@ void adminApprove(approve *target)
     cin >> re;
     target->setReply(re);
     target->statu = true;
-    //if(target->listNum == 1024)
+    if(target->listNum == 1024 && (ch == 'y' || ch == 'Y'))//主页管理员审核
+    {
+        char pass[17]{};
+        auto *nextptr=new userAccount();
+        cout<<"请为该账户设置初始密码："<<endl;
+        cin>>pass;
+        nextptr->signUp(target->Uid,target->name,pass,1);
+        last->next=nextptr;
+        nextptr->next= nullptr;
+        userAccount::saveUserData(temp);
+        system("CLS");
+        cout<<"新增管理员->["<<target->Uid<<"] "<<target->name<<endl;
+        cout<<"初始密码为->"<<pass<<endl;
+        cout<<"请将以上信息发送至邮箱 ["<< target->reContent()<<"]"<<endl;
+        return true;
+    }
+    return false;
 }
 bool getUserApprove(userAccount *point, approve *uahead)
 {
@@ -422,8 +444,4 @@ re:
         cout << "输入的申请编号不存在或不满足编辑要求，请重新输入：" << endl;
         goto re;
     }
-}
-void approveAdmin()
-{
-
 }
