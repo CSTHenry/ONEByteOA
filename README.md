@@ -16,14 +16,13 @@
 程序结构：
 
 ```
-|-根目录
-| uidInf.ini
-| main.exe
-|-src
-	| userData.dat
-	| attendanceData.dat
-	| appList.dat
-	| userApprove.dat
+├── ONEByteOA.exe（主程序）
+├── src（数据文件夹，请勿删除）
+│   ├── appList.dat（审批项目表，请勿删除）
+│   ├── attendanceData.dat（考勤数据表，请勿删除）
+│   ├── userApprove.dat（审批数据，请勿删除）
+│   └── userData.dat（数据表，请勿删除）
+└── uidInf.ini（UID配置文件，如需登录其他账号，请删除）
 ```
 
 ### 开发进度
