@@ -142,10 +142,11 @@ void adminAttendance(attendance *target)//补签函数
 
 void printAttendance(userAccount *head, attendance *ahead)//用于管理员菜单05
 {
+    cout << left << setw(11) << "[用户UID]" << setw(10) << "[姓名]" << setw(10) << "[职位]" << "[考勤信息]" << endl;
+    cout << endl;
     while (ahead && head) {
-        cout << "[UID：" << head->uid << "] " << head->uName() << " " << head->search_Situation() << " 签到状态->";
+        cout << "[" << head->uid << "] " << left << setw(10) << head->uName() << setw(10) << head->search_Situation() << "签到状态->";
         ahead->printAdminInf(simpleTime());
-        cout << endl;
         head = head->next;
         ahead = ahead->next;
     }

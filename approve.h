@@ -16,7 +16,7 @@ public:
     static approve *loadList(approve *uahead);
 
     bool getUserapp(char *uid, int num) {
-        if (!strcmp(Uid, uid) && num == listNum)
+        if (!strcmp(Uid, uid) && num == listNum && !statu)
             return true;
         else
             return false;
