@@ -263,7 +263,7 @@ bool getList(approve *uahead)
             uahead = uahead->next;
             continue;
         }
-        cout << "[" << left << setw(9) << uahead->Uid << "] " << setw(6) << setfill(' ') << uahead->name << "->"
+        cout << "[" << left << setw(8) << uahead->Uid << "] " << setw(6) << setfill(' ') << uahead->name << "->"
              << "[" << right << setfill('0') << setw(4) << uahead->listNum << "]" << left << setw(20)<< setfill(' ') <<uahead->reTitle()
              << "¡¸Î´ÉóºË¡¹" << endl;
         flag = true;

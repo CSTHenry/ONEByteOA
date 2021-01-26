@@ -258,6 +258,7 @@ bool userMenuChoice4(userAccount *point) {
 }
 
 bool adminMenuChoice2(userAccount *head, attendance *ahead, userAccount *point) {
+    re:
     cin.clear();
     cin.sync();
     int ch = 0 ,flag = 0;
@@ -301,12 +302,24 @@ bool adminMenuChoice2(userAccount *head, attendance *ahead, userAccount *point) 
         cout << "请输入需要注销的用户UID（谨慎操作）：" << endl;
         recin2:
         cin >> uid;
-        while(!strcmp(uid,point->uid))
+        while(!strcmp(uid,head->uid))
         {
-            cout<<"禁止注销主管理员账户，请重新输入："<<endl;
+            cout<<'\a'<<"鉴权失败，禁止注销主管理员账户，请重新输入："<<endl;
             cin>>uid;
         }
         target = head;
+        if(!strcmp(uid, point->uid)) {
+            cout << "警告：你正在注销自己的管理员账户，注销成功后会清除你的所有数据！" << endl;
+            cout << "请输入：\"我已知晓并确认注销我的管理员账户\"以完成注销：" << endl;
+            string entrance;
+            cin >> entrance;
+            if(entrance!="我已知晓并确认注销我的管理员账户") {
+                cout << "内容验证失败，返回用户管理菜单。" << endl;
+                system("pause");
+                system("CLS");
+                goto re;
+            }
+        }
         while (target) //将target指向需要编辑的用户对象
         {
             if (target->cheakUid(uid))
@@ -626,12 +639,6 @@ void adminUserDataChange(userAccount *head, userAccount *target) {
             cout << "正在更改 " << target->uName() << " 的UID，"
                  << "请输入新的UID：" << endl;
             cin >> newUid;
-            /*
-                while (!(newUid >= 1000 && newUid <= 1000000000))
-                {
-                    cout << "UID越界，请重新输入：" << endl;
-                    cin >> newUid;
-                }*/
             while (!cheakUidInAdvance(head, newUid)) {
                 cout << "当前UID：" << newUid << " 已存在，请重新输入：" << endl;
                 cin >> newUid;

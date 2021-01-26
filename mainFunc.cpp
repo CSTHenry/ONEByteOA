@@ -249,7 +249,7 @@ bool mainLogin() //登录函数，登录失败返回false，登录成功返回true
     auto *ahead = new attendance();
     userAccount *target = head;
     attendance *aTarget = ahead;
-    char loginID[12];//全局变量
+    char loginID[12];
     int flag = 0;
     char pass[17], rememberCh = 'n';
     if (!target->loadUserData(target)) //载入当前数据库
@@ -338,7 +338,7 @@ bool mainLogin() //登录函数，登录失败返回false，登录成功返回true
         }
         if (!flag) {
             system("CLS");
-            cout << "UID不存在或密码不匹配，返回主菜单" << endl;
+            cout << '\a' << "UID不存在或密码不匹配，返回主菜单" << endl;
             cout << endl;
             return false;
         } else {
@@ -366,7 +366,7 @@ bool mainLogin() //登录函数，登录失败返回false，登录成功返回true
             switch (target->getGroup()) {
                 case 0:
                     system("CLS");
-                    cout << "UID不存在或密码不匹配，返回主菜单" << endl;
+                    cout << '\a' << "UID不存在或密码不匹配，返回主菜单" << endl;
                     cout << endl;
                     return false;
                 case 1:
