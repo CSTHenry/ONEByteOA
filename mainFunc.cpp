@@ -12,7 +12,7 @@ void delay(int msec);//∫¡√Î
 bool rememberUid(char *uid, char rememberCh);
 
 void printMenu() {
-    cout << "        ∞Ïπ´◊‘∂ØªØ V1.4       " << endl;
+    cout << "        ∞Ïπ´◊‘∂ØªØ V1.5       " << endl;
     cout << "===============================" << endl;
     cout << "=         01.’Àªß◊¢≤·         =" << endl;
     cout << "=        02.π‹¿Ì‘±…Í«Î        =" << endl;
@@ -393,7 +393,7 @@ userAccount *searchUid(userAccount *head, char *id) //À—À˜uid£¨≤¢∑µªÿ÷∏’Î÷∏œÚœ‡”
 }
 
 void userAccount::print_userInfSimple() {
-    cout << "UID: " << uid << "\t" << name << "\t" << search_Situation() << endl;
+    cout << "UID: " << uid << "\t" << left << setw(10) << name << search_Situation() << endl;
 }
 
 bool rememberUid(char *uid, char rememberCh) {
